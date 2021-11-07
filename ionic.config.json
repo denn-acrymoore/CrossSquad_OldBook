@@ -1,0 +1,7 @@
+{
+  "name": "CrossSquad_OldBook",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "CrossSquad_OldBook",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
