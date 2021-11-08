@@ -1,0 +1,69 @@
+/* GLOBAL */
+ion-content.background{
+  --background: url('./Background/Welcome.png') no-repeat 100% 100%;
+  background-size: cover !important;
+}
+
+.text{
+  color:black;
+}
+
+/* Welcome Page */
+ion-button.button-welcome {
+  height: 40px;
+  width: 250px;
+  --background: #4b5e6c;
+}
+
+.text-welcome h1{
+  font-size: 60px;
+}
+
+.text-welcome h6{
+  font-size: x-large;
+}
+
+/* Login */
+.text-login h1{
+  font-size: x-large;
+}
+
+.card-login{
+  border-radius: 5px;
+}
+
+ion-button.button-login {
+  height: 40px;
+  width: 250px;
+  --background: #4b5e6c;
+}
+
+ion-input.input-login {
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+/* Register */
+.text-register h1{
+  font-size: xx-large;
+}
+
+.text-register h5{
+  font-size: small;
+  color: #9d3e04;
+}
+
+.card-register{
+  border-radius: 5px;
+}
+
+ion-button.button-register {
+  height: 40px;
+  width: 250px;
+  --background: #4b5e6c;
+}
+
+ion-input.input-register {
+  border: 1px solid black;
+  border-radius: 5px;
+}
