@@ -35,6 +35,21 @@ const Register: React.FC = () => {
 
             <IonLabel className="text">Confirm Password</IonLabel>
             <IonInput type="password" className="input-register"></IonInput>
+
+            <br />
+
+            <IonLabel className="text">Name</IonLabel>
+            <IonInput type="text" className="input-register"></IonInput>
+
+            <br />
+
+            <IonLabel className="text">Address</IonLabel>
+            <IonInput type="text" className="input-register"></IonInput>
+
+            <br />
+
+            <IonLabel className="text">Phone Number</IonLabel>
+            <IonInput type="text" className="input-register"></IonInput>
           </IonCardContent>
         </IonCard>
 
@@ -43,7 +58,7 @@ const Register: React.FC = () => {
         <IonRow>
           <IonCol className="ion-text-center padding">
             <IonButton className="button-register" href="/tabs">
-              NEXT
+              REGISTER
             </IonButton>
           </IonCol>
         </IonRow>

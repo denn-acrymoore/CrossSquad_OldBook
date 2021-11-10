@@ -1,3 +1,12 @@
+/* 
+Color Hex Code 
+1. Fiord (Dark Gray): #495C6A
+2. Ziggurat (Light Gray): #83A8B0
+3. Gin Fizz (Sand): #FCEDCC
+4. Sand Dune (Gray - Brown): #8C7764
+5. Saddle Brown (Brown): #9E3F05
+*/
+
 /* GLOBAL */
 ion-content.background{
   --background: url('./Background/Welcome.png') no-repeat 100% 100%;
@@ -6,6 +15,10 @@ ion-content.background{
 
 .text{
   color:black;
+}
+
+.title{
+  --background: #FCEDCC;
 }
 
 /* Welcome Page */
@@ -66,4 +79,100 @@ ion-button.button-register {
 ion-input.input-register {
   border: 1px solid black;
   border-radius: 5px;
+}
+
+/* Tabs */
+.tabs-css{
+  --background:#FCEDCC ;
+  --color:black;
+}
+
+/* Home */
+.searchbar-home{
+  --border-radius: 25px;
+}
+
+.card-home{
+  background: #495C6A;
+}
+
+.card-home h3{
+  color: white;
+}
+
+.wrapper{
+  min-height: 120px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.wrapper::-webkit-scrollbar{
+  width: 0;
+}
+
+.wrapper ion-button{
+  min-width: 210px;
+  height: 210px;
+  line-height: 110px;
+  text-align: center;
+  margin-right: 2px;
+  --background:none;
+}
+
+.wrapper ion-img{
+  min-width: 210px;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wrapper h1{
+  color: white;
+}
+
+.image-sec2{
+  min-width: 100px;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  --background: none;
+}
+
+.card-sec3{
+  --background:#83A8B0;
+  --color:white;
+}
+
+.image-sec3{
+  min-width: 100px;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* .button-sec3{
+  --background:#83A8B0;
+  --color:white;
+  min-width: 120px;
+  height: 120px;
+  object-fit: cover;
+} */
+
+/* Detail Product */
+.image-detail{
+  min-width: 30vh;
+  height: 30vh;
+  border-radius: 5px;
+}
+
+ion-button.button-addToCart {
+  height: 40px;
+  width: 300px;
+  --background: #83A8B0;
 }
