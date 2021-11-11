@@ -7,7 +7,7 @@ const Login: React.FC = () => {
       <IonContent fullscreen class="background">
         <IonRow className="ion-padding-start ion-padding-end">
           <IonCol className="ion-text-left">
-            <h5>OldBook</h5>
+            <p>OldBook</p>
           </IonCol>
           <IonCol className="ion-text-right">
             <u><h6><a href="/register">REGISTER</a></h6></u>

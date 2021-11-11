@@ -11,7 +11,7 @@ const Welcome: React.FC = () => {
         <IonCol>
           <IonRow>
             <IonCol className="ion-text-center padding text-welcome">
-              <h6>WELCOME TO</h6>
+              <p>WELCOME TO</p>
               <b><h1>OldBook</h1></b>
             </IonCol>
           </IonRow>

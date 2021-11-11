@@ -9,7 +9,7 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="title">
-          <IonTitle className="ion-text-center">OldBook</IonTitle>
+          <IonTitle className="ion-text-center"><b>OldBook</b></IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -67,10 +67,8 @@ const Home: React.FC = () => {
         </IonGrid>
 
         {/* Home - Search -> Hidden: Off kalau pencet search bar*/}
-        {/* <IonButton fill="clear" className="button-sec3 ion-padding-start ion-padding-end" href="/tabs/productdetail">
-        </IonButton> */}
 
-        <IonCard className="card-sec3">
+        <IonCard className="card-sec3 ion-padding-end" href="/tabs/productdetail">
           <IonCardContent>
             <IonGrid>
               <IonRow>

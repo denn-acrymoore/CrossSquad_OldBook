@@ -11,6 +11,7 @@ Color Hex Code
 ion-content.background{
   --background: url('./Background/Welcome.png') no-repeat 100% 100%;
   background-size: cover !important;
+  object-fit: cover;
 }
 
 .text{
@@ -19,6 +20,42 @@ ion-content.background{
 
 .title{
   --background: #FCEDCC;
+}
+
+.card-sec3{
+  --background:#83A8B0;
+  --color:white;
+  width: 95%;
+  height: 150px;
+}
+
+.image-sec3{
+  min-width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-empty{
+  --background:url('./Background/Empty.png') no-repeat 100% 100%;
+  background-size: cover !important;
+  object-fit: cover;
+
+  width: 100%;
+  height: 50%;
+}
+
+.card-empty h2{
+  color:white;
+  font-size: large;
+}
+
+.card-empty ion-button{
+  --border-radius: 15px;
+  --background: white;
+  --color: #495C6A;
 }
 
 /* Welcome Page */
@@ -96,7 +133,7 @@ ion-input.input-register {
   background: #495C6A;
 }
 
-.card-home h3{
+.card-home h3 ,h4 ,h5 ,h6{
   color: white;
 }
 
@@ -142,27 +179,6 @@ ion-input.input-register {
   --background: none;
 }
 
-.card-sec3{
-  --background:#83A8B0;
-  --color:white;
-}
-
-.image-sec3{
-  min-width: 100px;
-  height: 100px;
-  object-fit: cover;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* .button-sec3{
-  --background:#83A8B0;
-  --color:white;
-  min-width: 120px;
-  height: 120px;
-  object-fit: cover;
-} */
 
 /* Detail Product */
 .image-detail{
@@ -175,4 +191,122 @@ ion-button.button-addToCart {
   height: 40px;
   width: 300px;
   --background: #83A8B0;
+}
+
+/* Sell Page */
+.card-sell{
+  --background:#83A8B0;
+  --color:white;
+  width: 100%;
+  height: 150px;
+}
+
+.fab-button{
+  --background: #495C6A;
+}
+
+ion-input.input-sell {
+  border: 1px solid #83A8B0;
+  border-radius: 5px;
+  --background: #83A8B0;
+  color: white;
+}
+
+ion-button.upload-sell{
+  --border-radius: 10px;
+  --background:#FCEDCC;
+  --color:black;
+  width: 40%;
+}
+
+ion-button.save-sell{
+  --border-radius: 10px;
+  --background:#495C6A;
+  --color:white;
+  width: 100%;
+}
+
+ion-button.cancel-sell{
+  --border-radius: 10px;
+  --background:#FF4545;
+  --color:white;
+  width: 100%;
+}
+
+/* Cart */
+.card-cart{
+  --background:#83A8B0;
+  --color:white;
+  width: 100%;
+  height: 150px;
+}
+
+.checkout-button ion-button{
+  width: 50%;
+  --border-radius: 15px;
+  --background: #495C6A;
+  --color: white;
+}
+
+/* Checkout */
+
+.list-checkout h5{
+  --color: black;
+}
+
+.card-checkout{
+  background: #83A8B0;
+}
+
+.card-checkout h3 ,h5 ,h6{
+  --color: white;
+}
+
+.numeric-checkout{
+  --color: #9E3F05;
+}
+
+.card-list-item{
+  box-shadow: none;
+  --background:white;
+  --color:black;
+  width: 100%;
+  height: fit-content;
+}
+
+.image-item{
+  min-width: 100%;
+  height: 60px;
+  object-fit: cover;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ion-button.checkout-button{
+  --border-radius: 10px;
+  --background:#495C6A;
+  --color:white;
+  width: 40%;
+}
+
+/* Profile */
+ion-label.info-profile{
+  --color:white;
+}
+
+.info-profile{
+  --background:#83A8B0;
+  --color: white;
+  border-radius: 5px;
+}
+
+.btn1-profile{
+  width: 70%;
+  --background:#4b5e6c;
+}
+
+.btn2-profile{
+  width: 70%;
+  --background:#FF4545;
 }

@@ -1,23 +1,73 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { IonList, IonItemSliding, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonPage, IonRow, IonTitle, IonToolbar, IonItem, IonItemOptions, IonItemOption, IonIcon, IonLabel, IonFab, IonFabButton } from '@ionic/react';
+import { useRef } from 'react';
+import { addSharp, pulseSharp, trashBinSharp, trashSharp } from "ionicons/icons";
+import './Theme.css';
 
 const Sell: React.FC = () => {
+  const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null);
+
+  const deleteItem = () => {
+    slidingOptionsRef.current?.closeOpened();
+    console.log("Delete...");
+  }
+
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>Sell</IonTitle>
+        <IonToolbar className="title">
+          <IonTitle><b>Sell</b></IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Blank</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer />
+      <IonContent fullscreen className="ion-padding-end">
+
+        {/* There is no item here */}
+        <IonCard className="card-empty ion-padding-top ion-text-center">
+          <IonCardContent>
+            <b><h2>You haven't sell any book.</h2></b>
+            <br />
+            <IonButton href="/tabs/inputsell">
+              Upload Your Book
+            </IonButton>
+          </IonCardContent>
+        </IonCard>
+
+        {/* There's something to sell */}
+        <IonCard className="card-sell">
+          <IonItemSliding>
+            <IonItem className="card-sell">
+              <IonCardContent>
+                <IonGrid>
+                  <IonRow>
+                    <IonCol size="5">
+                      <IonImg className="image-sec3" src="./assets/Book.jpg" />
+                    </IonCol>
+                    <IonCol size="7">
+                      <h2>Judul Buku</h2>
+                      <h6>Informasi buku, seperti ini, seperti itu, seperti apapun hehe.</h6>
+                      <h6 className="ion-text-end">Rp 99.999</h6>
+                    </IonCol>
+                  </IonRow>
+                </IonGrid>
+              </IonCardContent>
+            </IonItem>
+
+            {/* Slide Item */}
+            <IonItemOptions side="end">
+              <IonItemOption color="danger" onClick={deleteItem}>
+                &#160;&#160;<IonIcon icon={trashSharp} />&#160;&#160;
+              </IonItemOption>
+            </IonItemOptions>
+          </IonItemSliding>
+        </IonCard>
+
+        <IonFab vertical="bottom" horizontal="end" slot="fixed" >
+          <IonFabButton className="fab-button" href="/tabs/inputsell">
+            <IonIcon icon={addSharp}></IonIcon>
+          </IonFabButton>
+        </IonFab>
+
       </IonContent>
-    </IonPage>
+    </IonPage >
   );
 };
 

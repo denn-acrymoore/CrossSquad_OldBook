@@ -7,8 +7,13 @@ import Home from './Home';
 import productDetail from './HomeProductDetail';
 
 import Sell from './Sell';
+import InputSell from './InputSell';
+
 import Cart from './Cart';
+import Checkout from './Checkout';
+
 import Profile from './Profile';
+import EditProfile from './EditProfile';
 
 const Tabs: React.FC = () => {
   return (
@@ -16,11 +21,18 @@ const Tabs: React.FC = () => {
       {/* Router */}
       <IonRouterOutlet>
         <Redirect exact from="/tabs" to="/tabs/home" />
+
         <Route path="/tabs/home" component={Home} />
         <Route path="/tabs/productDetail" component={productDetail} />
+
         <Route exact path="/tabs/sell" component={Sell} />
+        <Route exact path="/tabs/inputsell" component={InputSell} />
+
         <Route exact path="/tabs/cart" component={Cart} />
+        <Route exact path="/tabs/checkout" component={Checkout} />
+
         <Route exact path="/tabs/profile" component={Profile} />
+        <Route exact path="/tabs/editprofile" component={EditProfile} />
       </IonRouterOutlet>
 
       {/* Tabs */}
