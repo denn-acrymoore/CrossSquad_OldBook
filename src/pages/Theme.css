@@ -7,11 +7,36 @@ Color Hex Code
 5. Saddle Brown (Brown): #9E3F05
 */
 
+@font-face {
+  font-family: 'Roboto';
+  src: url('../theme/fonts/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Rosarivo';
+  src: url('../theme/fonts/Rosarivo/Rosarivo-Regular.ttf');
+}
+
 /* GLOBAL */
-ion-content.background{
+/* ion-content.background{
   --background: url('./Background/Welcome.png') no-repeat 100% 100%;
   background-size: cover !important;
   object-fit: cover;
+} */
+
+ion-content {
+  font-family: 'Roboto';
+}
+
+.background{
+  --background: #FCEDCC;
+}
+
+.background img {
+  margin-left: -5px;
+  width: 100%;
+  height: auto;
+  vertical-align: bottom;
 }
 
 .text{
@@ -26,16 +51,22 @@ ion-content.background{
   --background:#83A8B0;
   --color:white;
   width: 95%;
-  height: 150px;
+  height: auto;
+  border-radius: 20px;
+  padding: 0px;
+}
+
+.card-sec3 h2, .card-sec3 h5 {
+  margin-bottom: 5px;
 }
 
 .image-sec3{
-  min-width: 100%;
+  min-width: 90%;
   height: 100px;
   object-fit: cover;
   display: block;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: 5px;
 }
 
 .card-empty{
@@ -59,82 +90,194 @@ ion-content.background{
 }
 
 /* Welcome Page */
-ion-button.button-welcome {
+.button-welcome {
   height: 40px;
   width: 250px;
   --background: #4b5e6c;
+  font-size: 22px;
 }
 
-.text-welcome h1{
-  font-size: 60px;
+.text-welcome {
+  margin-top: 24%;
 }
 
 .text-welcome h6{
-  font-size: x-large;
+  font-family: 'Roboto' !important;
+  font-size: 28px;
+  color: black;
 }
 
+.text-welcome h1{
+  font-family: 'Rosarivo' !important;
+  font-size: 78px;
+  margin-top: 8%;
+  margin-bottom: 15%;
+}
+
+#welcome-bottom {
+  margin-bottom: 90px;
+}
+
+
 /* Login */
+.nav1 {
+  margin-top: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.left-logo a {
+  color: black;
+  font-family: 'Rosarivo';
+  font-size: 22px;
+}
+
+.btn-to a{
+  color: black;
+  font-size: 18px;
+}
+
 .text-login h1{
-  font-size: x-large;
+  font-size: 64px;
+  margin-top: 10%;
+  margin-bottom: 2px;
+}
+
+.text-login h5{
+  font-size: 20px;
+  color: #9d3e04;
+  margin-top: 0px;
+  margin-bottom: 15px;
 }
 
 .card-login{
-  border-radius: 5px;
+  border-radius: 20px;
+  --background: white;
+  margin-left: 30px;
+  margin-right: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 15px;
+  padding-bottom: 20px;
 }
 
-ion-button.button-login {
+.card-login ion-label {
+  color: black;
+  font-size: 22px;
+}
+
+.card-login #here {
+  margin-bottom: 15px;
+}
+
+.button-login {
   height: 40px;
   width: 250px;
   --background: #4b5e6c;
+  font-size: 22px;
+  margin-top: 15px;
+  margin-bottom: 32px;
 }
 
-ion-input.input-login {
+.input-login {
   border: 1px solid black;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 /* Register */
 .text-register h1{
-  font-size: xx-large;
+  font-size: 60px;
+  margin-top: 5%;
+  margin-bottom: 2px;
 }
 
 .text-register h5{
-  font-size: small;
+  font-size: 20px;
   color: #9d3e04;
+  margin-top: 0px;
+  margin-bottom: 15px;
 }
 
 .card-register{
-  border-radius: 5px;
+  border-radius: 20px;
+  --background: white;
+  margin-left: 30px;
+  margin-right: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 15px;
+  padding-bottom: 20px;
 }
 
-ion-button.button-register {
+.card-register ion-label {
+  color: black;
+  font-size: 22px;
+}
+
+.card-register ion-input {
+  margin-bottom: 20px;
+}
+
+.card-register #here {
+  margin-bottom: 0px;
+}
+
+.button-register {
   height: 40px;
   width: 250px;
   --background: #4b5e6c;
+  font-size: 22px;
+  margin-top: 15px;
+  margin-bottom: 32px;
 }
 
-ion-input.input-register {
+.input-register {
   border: 1px solid black;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 /* Tabs */
 .tabs-css{
   --background:#FCEDCC ;
   --color:black;
+  height: 9%;
+}
+
+.tabs-css ion-label {
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+.tabs-css ion-icon {
+  font-size: 32px;
 }
 
 /* Home */
+#home ion-title {
+  font-family: 'Rosarivo';
+  font-size: 32px;
+  margin-top: 10px;
+}
+
 .searchbar-home{
   --border-radius: 25px;
+  --box-shadow: 0px 0px 1.5px 1.5px black;
+  --icon-color: black;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .card-home{
   background: #495C6A;
 }
 
-.card-home h3 ,h4 ,h5 ,h6{
+.card-home h3 ,.card-home h4 ,.card-home h5 ,.card-home h6{
   color: white;
+}
+
+.card-home h3 {
+  margin: 5px;
+  font-size: 26px;
 }
 
 .wrapper{
@@ -152,8 +295,8 @@ ion-input.input-register {
   height: 210px;
   line-height: 110px;
   text-align: center;
-  margin-right: 2px;
-  --background:none;
+  margin-right: 10px;
+  --background: none;
 }
 
 .wrapper ion-img{
@@ -169,6 +312,16 @@ ion-input.input-register {
   color: white;
 }
 
+.section2 h1 {
+  font-size: 32px;
+}
+
+.section2 ion-card {
+  padding-top: 10px;
+  --background: #83A8B0; 
+  color: white;
+}
+
 .image-sec2{
   min-width: 100px;
   height: 150px;
@@ -181,17 +334,34 @@ ion-input.input-register {
 
 
 /* Detail Product */
+#home-detail ion-title {
+  font-family: 'Rosarivo';
+  font-size: 32px;
+  margin-top: 10px;
+}
+
 .image-detail{
   min-width: 30vh;
-  height: 30vh;
+  height: 40vh;
   border-radius: 5px;
 }
 
-ion-button.button-addToCart {
-  height: 40px;
-  width: 300px;
-  --background: #83A8B0;
+#product-detail {
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 15px;
 }
+
+.button-addToCart {
+  height: 40px;
+  width: 200px;
+  --background: #83A8B0;
+  font-size: 20px;
+  text-transform: none;
+  border-radius: 10px;
+}
+
+
 
 /* Sell Page */
 .card-sell{

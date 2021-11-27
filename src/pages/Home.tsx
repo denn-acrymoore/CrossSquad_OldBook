@@ -6,21 +6,20 @@ const Home: React.FC = () => {
   // Search bar
   const [searchText, setSearchText] = useState('');
   return (
-    <IonPage>
+    <IonPage id="home">
       <IonHeader>
         <IonToolbar className="title">
-          <IonTitle className="ion-text-center"><b>OldBook</b></IonTitle>
+          <IonTitle className="ion-text-center">OldBook</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <br />
         <IonSearchbar className="searchbar-home" value={searchText} onIonChange={e => setSearchText(e.detail.value!)} animated></IonSearchbar>
 
         {/* Section 1 */}
         <IonCol className="section1">
           <IonCardHeader className="card-home">
             <IonCardTitle>
-              <h3>You will love this book!</h3>
+              <h3>You will love this books !</h3>
             </IonCardTitle>
           </IonCardHeader>
 
@@ -49,19 +48,25 @@ const Home: React.FC = () => {
         </IonCol>
 
         {/* Section 2 */}
-        <IonGrid className="ion-padding-start ion-padding-end">
-          <h3>Other Books</h3>
+        <IonGrid className="ion-padding-start ion-padding-end section2">
+          <h1>Other Books</h1>
           <IonRow>
-            <IonCol size="6">
-              <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
-                <IonImg src="./assets/Book.jpg" />
-              </IonButton>
+            <IonCol size="6" className="ion-text-center">
+              <IonCard>
+                <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
+                  <IonImg src="./assets/Book.jpg" />
+                </IonButton>
+                <h4>Geo Book</h4>
+              </IonCard>
             </IonCol>
 
-            <IonCol size="6">
-              <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
-                <IonImg className="image-sec2" src="./assets/Book2.jpg" />
-              </IonButton>
+            <IonCol size="6" className="ion-text-center">
+              <IonCard>
+                <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
+                  <IonImg className="image-sec2" src="./assets/Book2.jpg" />
+                </IonButton>
+                <h4>Math Book</h4>
+              </IonCard>
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -76,7 +81,7 @@ const Home: React.FC = () => {
                   <IonImg className="image-sec3" src="./assets/Book.jpg" />
                 </IonCol>
                 <IonCol size="7">
-                  <h3>Judul Buku</h3>
+                  <h2>Judul Buku</h2>
                   <h5>Informasi buku, seperti ini, seperti itu, seperti apapun hehe.</h5>
                   <h6 className="ion-text-end">Rp 99.999</h6>
                 </IonCol>

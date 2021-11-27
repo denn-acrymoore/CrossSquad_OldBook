@@ -1,6 +1,6 @@
 import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { Redirect, Route } from 'react-router-dom';
-import { homeSharp, cashSharp, cartSharp, personCircleSharp } from "ionicons/icons";
+import { homeSharp, cashSharp, cartSharp, personCircleSharp, home, cash, cart, personCircle, pricetag, pricetags, homeOutline, pricetagsOutline, cartOutline, personCircleOutline } from "ionicons/icons";
 
 // Page
 import Home from './Home';
@@ -38,22 +38,22 @@ const Tabs: React.FC = () => {
       {/* Tabs */}
       <IonTabBar slot="bottom" className="tabs-css">
         <IonTabButton tab="home" href="/tabs/home">
-          <IonIcon icon={homeSharp} />
+          <IonIcon icon={homeOutline} />
           <IonLabel>Home</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="sell" href="/tabs/sell">
-          <IonIcon icon={cashSharp} />
+          <IonIcon icon={pricetagsOutline} />
           <IonLabel>Sell</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="cart" href="/tabs/cart">
-          <IonIcon icon={cartSharp} />
+          <IonIcon icon={cartOutline} />
           <IonLabel>Cart</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="profile" href="/tabs/profile">
-          <IonIcon icon={personCircleSharp} />
+          <IonIcon icon={personCircleOutline} />
           <IonLabel>Profile</IonLabel>
         </IonTabButton>
       </IonTabBar>

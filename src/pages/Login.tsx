@@ -3,44 +3,43 @@ import './Theme.css';
 
 const Login: React.FC = () => {
   return (
-    <IonPage>
-      <IonContent fullscreen class="background">
-        <IonRow className="ion-padding-start ion-padding-end">
-          <IonCol className="ion-text-left">
-            <p>OldBook</p>
+    <IonPage id="login">
+      <IonContent class="background" scrollY={false}>
+        <IonRow className="nav1">
+          <IonCol className="ion-text-left left-logo">
+            <a>OldBook</a>
           </IonCol>
-          <IonCol className="ion-text-right">
-            <u><h6><a href="/register">REGISTER</a></h6></u>
+          <IonCol className="ion-text-right btn-to">
+            <u><a href="/register">REGISTER</a></u>
           </IonCol>
         </IonRow>
 
         <IonRow>
-          <IonCol className="ion-text-center padding text-login">
+          <IonCol className="ion-text-center text-login">
             <b><h1>LOGIN</h1></b>
+            <h5>Please login to proceed</h5>
           </IonCol>
         </IonRow>
 
-        <IonCard className="card-login ion-padding-top ion-padding-bottom">
+        <IonCard className="card-login">
           <IonCardContent>
             <IonLabel className="text">Email</IonLabel>
-            <IonInput type="email" className="input-login"></IonInput>
-
-            <br />
+            <IonInput type="email" className="input-login" id="here"></IonInput>
 
             <IonLabel className="text">Password</IonLabel>
             <IonInput type="password" className="input-login"></IonInput>
           </IonCardContent>
         </IonCard>
 
-        <br />
-
         <IonRow>
-          <IonCol className="ion-text-center padding">
+          <IonCol className="ion-text-center">
             <IonButton className="button-login" href="/tabs">
-              LOGIN
+              SIGN IN
             </IonButton>
           </IonCol>
         </IonRow>
+
+        <img src="assets/images/Background.png" />
       </IonContent>
     </IonPage>
   );

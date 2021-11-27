@@ -3,20 +3,15 @@ import './Theme.css';
 
 const Welcome: React.FC = () => {
   return (
-    <IonPage>
-      <IonContent fullscreen className="background">
-
-        <br /><br /><br />
-
+    <IonPage id="welcome">
+      <IonContent className="background" scrollY={false}>
         <IonCol>
           <IonRow>
             <IonCol className="ion-text-center padding text-welcome">
-              <p>WELCOME TO</p>
+              <h6>WELCOME TO</h6>
               <b><h1>OldBook</h1></b>
             </IonCol>
           </IonRow>
-
-          <br /><br /><br /><br />
 
           <IonRow>
             <IonCol className="ion-text-center padding">
@@ -25,7 +20,8 @@ const Welcome: React.FC = () => {
               </IonButton>
             </IonCol>
           </IonRow>
-          <IonRow>
+
+          <IonRow id="welcome-bottom">
             <IonCol className="ion-text-center padding">
               <IonButton className="button-welcome" href="/register">
                 REGISTER
@@ -34,7 +30,7 @@ const Welcome: React.FC = () => {
           </IonRow>
         </IonCol>
 
-
+        <img src="assets/images/background.png" />
       </IonContent>
     </IonPage>
   );
