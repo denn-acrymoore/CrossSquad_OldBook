@@ -1,6 +1,7 @@
 import { IonButton, IonRow, IonCol, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardContent, IonLabel, IonInput } from '@ionic/react';
 import './Theme.css';
 
+/*Login Page*/
 const Login: React.FC = () => {
   return (
     <IonPage id="login">
