@@ -11,15 +11,15 @@ const HomeProductDetail: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen className="ion-padding-start ion-padding-end">
         <IonCol className="image-detail">
-          <IonImg src="./assets/Book.jpg" className="image-detail" />
+          <IonImg src="./assets/buku1.jpg" className="image-detail" />
         </IonCol>
 
         <IonRow id="product-detail">
-        <IonCol >
-          <h2>Book's Name</h2>
-          <h5>Hai apa kabar? Iya aku baik-baik saja, hehe. Babai.</h5>
-          <h6 className="ion-text-end">Rp 99.999</h6>
-        </IonCol>
+          <IonCol >
+            <h2>Buku Matematika Sukino Kelas 10</h2>
+            <h5>Buku Matematika peminatan kelas 10 dengan kondisi yang masih bagus dan layak pakai.</h5>
+            <h6 className="ion-text-end">Rp 49.000</h6>
+          </IonCol>
         </IonRow>
 
         <IonRow className="ion-text-center">
