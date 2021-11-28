@@ -1,0 +1,6 @@
+{
+	"appId": "id.ac.umn.crosssquad.oldbook",
+	"appName": "CrossSquad_OldBook",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
