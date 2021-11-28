@@ -21,14 +21,14 @@ const Cart: React.FC = () => {
 
       <IonContent fullscreen className="ion-padding-end">
         {/* There is no item here */}
-        <IonCard className="card-empty ion-padding-top ion-text-center">
+        {/* <IonCard className="card-empty ion-padding-top ion-text-center">
           <IonCardContent>
             <h2>You haven't add any book.</h2>
             <IonButton href="/tabs/home">
               Find Your Book
             </IonButton>
           </IonCardContent>
-        </IonCard>
+        </IonCard> */}
 
         {/* There's something to buy */}
         <IonCard className="card-cart">
@@ -38,12 +38,12 @@ const Cart: React.FC = () => {
                 <IonGrid>
                   <IonRow>
                     <IonCol size="5">
-                      <IonImg className="image-sec3" src="./assets/Book.jpg" />
+                      <IonImg className="image-sec3" src="./assets/buku7.jpg" />
                     </IonCol>
                     <IonCol size="7">
-                      <h2>Judul Buku</h2>
-                      <h5>Informasi buku, seperti ini, seperti itu, seperti apapun hehe.</h5>
-                      <h6 className="ion-text-end">Rp 99.999</h6>
+                      <h2>Miss Irresistible Stylist</h2>
+                      <h5>Fashion stylist yang berharap gambar-gambar pakaian di buku sketsanya bisa mewujud nyata.</h5>
+                      <h6 className="ion-text-end">Rp 40.000</h6>
                     </IonCol>
                   </IonRow>
                 </IonGrid>

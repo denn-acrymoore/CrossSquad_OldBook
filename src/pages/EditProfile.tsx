@@ -13,22 +13,22 @@ const EditProfile: React.FC = () => {
       <IonContent fullscreen className="ion-padding-start ion-padding-end ion-padding-top">
         <IonItem lines="none" className="info-profile">
           <IonLabel>NAME : </IonLabel>
-          <IonInput type="text" value="Nama saya"></IonInput>
+          <IonInput type="text" value="Cantika"></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>ADDRESS : </IonLabel>
-          <IonInput type="text" value="Bumi"></IonInput>
+          <IonInput type="text" value="Jl. Kemayoran No. 127"></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>PHONE NUMBER : </IonLabel>
-          <IonInput type="number" value="12345678"></IonInput>
+          <IonInput type="number" value="081247191991"></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>EMAIL : </IonLabel>
-          <IonInput type="email" disabled value="saya@student.umn.ac.id"></IonInput>
+          <IonInput type="email" disabled value="cantika@gmail.com"></IonInput>
         </IonItem>
 
         <IonCol className="ion-text-center">

@@ -21,14 +21,14 @@ const Sell: React.FC = () => {
 
       <IonContent className="ion-padding-end">
         {/* There is no item here */}
-        <IonCard className="card-empty ion-padding-top ion-text-center">
+        {/* <IonCard className="card-empty ion-padding-top ion-text-center">
           <IonCardContent>
             <h2>You haven't sell any book.</h2>
             <IonButton href="/tabs/inputsell">
               Upload Your Book
             </IonButton>
           </IonCardContent>
-        </IonCard>
+        </IonCard> */}
 
         {/* There's something to sell */}
         <IonCard className="card-sell">
@@ -38,12 +38,12 @@ const Sell: React.FC = () => {
                 <IonGrid>
                   <IonRow>
                     <IonCol size="5">
-                      <IonImg className="image-sec3" src="./assets/Book.jpg" />
+                      <IonImg className="image-sec3" src="./assets/buku8.jpg" />
                     </IonCol>
                     <IonCol size="7">
-                      <h2>Judul Buku</h2>
-                      <h5>Informasi buku, seperti ini, seperti itu, seperti apapun hehe.</h5>
-                      <h6 className="ion-text-end">Rp 99.999</h6>
+                      <h2>Saham Anda Lebih Mahal !!! Santo Vibby</h2>
+                      <h5>Buku ini akan melengkapi pengetahuan dan keterampilan yang membantu Anda untuk tetap tenang dan mengerti bertransaksi di pasar modal.</h5>
+                      <h6 className="ion-text-end">Rp 130.000</h6>
                     </IonCol>
                   </IonRow>
                 </IonGrid>

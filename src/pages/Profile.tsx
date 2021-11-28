@@ -13,22 +13,22 @@ const Profile: React.FC = () => {
       <IonContent fullscreen className="ion-padding-start ion-padding-end ion-padding-top">
         <IonItem lines="none" className="info-profile">
           <IonLabel>NAME : </IonLabel>
-          <IonInput type="text" readonly value="Nama saya"></IonInput>
+          <IonInput type="text" readonly value="Cantika"></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>ADDRESS : </IonLabel>
-          <IonInput type="text" readonly value="Bumi"></IonInput>
+          <IonInput type="text" readonly value="Jl. Kemayoran No. 127"></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>PHONE NUMBER : </IonLabel>
-          <IonInput type="number" readonly value="12345678"></IonInput>
+          <IonInput type="number" readonly value="081247191991"></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>EMAIL : </IonLabel>
-          <IonInput type="email" readonly value="saya@student.umn.ac.id"></IonInput>
+          <IonInput type="email" readonly value="cantika@gmail.com"></IonInput>
         </IonItem>
 
         <IonCol className="ion-text-center">

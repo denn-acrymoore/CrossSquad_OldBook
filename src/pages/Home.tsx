@@ -25,24 +25,18 @@ const Home: React.FC = () => {
 
           <IonCardContent className="wrapper card-home">
             <IonButton href="/tabs/productDetail">
-              <IonImg src="./assets/Book.jpg" />
-              <IonFab vertical="bottom" horizontal="start">
-                <h1><b>Book</b></h1>
-              </IonFab>
+              <IonImg src="./assets/buku1.jpg" />
             </IonButton>
 
             <IonButton>
-              <IonImg src="./assets/Book.jpg" />
-              <IonFab vertical="bottom" horizontal="start">
-                <h1><b>Book</b></h1>
-              </IonFab>
+              <IonImg src="./assets/buku2.jpg" />
             </IonButton>
 
             <IonButton>
-              <IonImg src="./assets/Book.jpg" />
-              <IonFab vertical="bottom" horizontal="start">
+              <IonImg src="./assets/buku3.jpg" />
+              {/* <IonFab vertical="bottom" horizontal="start">
                 <h1><b>Book</b></h1>
-              </IonFab>
+              </IonFab> */}
             </IonButton>
           </IonCardContent>
         </IonCol>
@@ -54,18 +48,38 @@ const Home: React.FC = () => {
             <IonCol size="6" className="ion-text-center">
               <IonCard>
                 <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
-                  <IonImg src="./assets/Book.jpg" />
+                  <IonImg src="./assets/buku4.jpg" />
                 </IonButton>
-                <h4>Geo Book</h4>
+                <h4>Rich and Poor Dad</h4>
               </IonCard>
             </IonCol>
 
             <IonCol size="6" className="ion-text-center">
               <IonCard>
                 <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
-                  <IonImg className="image-sec2" src="./assets/Book2.jpg" />
+                  <IonImg className="image-sec2" src="./assets/buku5.jpg" />
                 </IonButton>
-                <h4>Math Book</h4>
+                <h4>Geografi kelas 11</h4>
+              </IonCard>
+            </IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol size="6" className="ion-text-center">
+              <IonCard>
+                <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
+                  <IonImg src="./assets/buku6.jpg" />
+                </IonButton>
+                <h4>Buku Bahasa Indonesia Kelas 8</h4>
+              </IonCard>
+            </IonCol>
+
+            <IonCol size="6" className="ion-text-center">
+              <IonCard>
+                <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
+                  <IonImg className="image-sec2" src="./assets/buku7.jpg" />
+                </IonButton>
+                <h4>Miss Irresistible Stylist</h4>
               </IonCard>
             </IonCol>
           </IonRow>
@@ -73,7 +87,7 @@ const Home: React.FC = () => {
 
         {/* Home - Search -> Hidden: Off kalau pencet search bar*/}
 
-        <IonCard className="card-sec3 ion-padding-end" href="/tabs/productdetail">
+        {/* <IonCard className="card-sec3 ion-padding-end" href="/tabs/productdetail">
           <IonCardContent>
             <IonGrid>
               <IonRow>
@@ -88,7 +102,7 @@ const Home: React.FC = () => {
               </IonRow>
             </IonGrid>
           </IonCardContent>
-        </IonCard>
+        </IonCard> */}
 
       </IonContent>
     </IonPage>
