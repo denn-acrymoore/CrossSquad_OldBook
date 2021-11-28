@@ -12,19 +12,18 @@ const Sell: React.FC = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage id="sell">
       <IonHeader>
         <IonToolbar className="title">
-          <IonTitle><b>Sell</b></IonTitle>
+          <IonTitle>Sell</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen className="ion-padding-end">
 
+      <IonContent className="ion-padding-end">
         {/* There is no item here */}
         <IonCard className="card-empty ion-padding-top ion-text-center">
           <IonCardContent>
-            <b><h2>You haven't sell any book.</h2></b>
-            <br />
+            <h2>You haven't sell any book.</h2>
             <IonButton href="/tabs/inputsell">
               Upload Your Book
             </IonButton>
@@ -43,7 +42,7 @@ const Sell: React.FC = () => {
                     </IonCol>
                     <IonCol size="7">
                       <h2>Judul Buku</h2>
-                      <h6>Informasi buku, seperti ini, seperti itu, seperti apapun hehe.</h6>
+                      <h5>Informasi buku, seperti ini, seperti itu, seperti apapun hehe.</h5>
                       <h6 className="ion-text-end">Rp 99.999</h6>
                     </IonCol>
                   </IonRow>

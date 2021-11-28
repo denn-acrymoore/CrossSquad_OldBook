@@ -1,76 +1,73 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonList, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import './Theme.css';
 
 const Checkout: React.FC = () => {
   return (
-    <IonPage>
+    <IonPage id="cart">
       <IonHeader>
         <IonToolbar className="title">
-          <IonTitle><b>Checkout</b></IonTitle>
+          <IonTitle>Checkout</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
 
-        <h3 className="ion-padding-start ion-padding-end">INFORMATION</h3>
+      <IonContent fullscreen>
+      <IonList className="list-checkout">
+        <IonItem>
+          <IonLabel>INFORMATION</IonLabel>
+        </IonItem>
 
         <IonCardHeader className="card-checkout">
-          <IonCardTitle>
-            <h5>USER'S NAME</h5>
-            <h6>User's Address</h6>
-            <br />
+            <h4>USER'S NAME</h4>
+            <h5>User's Address</h5>
             <h6>08XX-XXXX-XXXX</h6>
-          </IonCardTitle>
         </IonCardHeader>
 
-        <IonList className="list-checkout">
-          <IonItem>
-            <p>COURIER</p>
-          </IonItem>
-          <IonItem>
-            <IonCol><p color="gray">JNE - REG</p></IonCol>
-            <IonCol className="ion-text-end"><p className="numeric-checkout">Rp 7.000</p></IonCol>
-          </IonItem>
-          <IonItem>
-            <p>ITEMS</p>
-          </IonItem>
+        <IonItem>
+          <IonLabel>COURIER</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonCol><a id="courier-type">JNE - REG</a></IonCol>
+          <IonCol className="ion-text-end"><a id="courier-price">Rp 7.000</a></IonCol>
+        </IonItem>
 
-          <IonItem>
-            <IonCard className="card-list-item ion-padding-end">
-              <IonCardContent>
-                <IonGrid>
-                  <IonRow>
-                    <IonCol size="5">
-                      <IonImg className="image-item" src="./assets/Book.jpg" />
-                    </IonCol>
-                    <IonCol size="7">
-                      <h3>Judul Buku</h3>
-                      <h3>Rp 99.999</h3>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              </IonCardContent>
-            </IonCard>
-          </IonItem>
+        <IonItem>
+          <IonLabel>ITEMS</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonCard className="card-list-item ion-padding-end">
+            <IonCardContent>
+              <IonGrid>
+                <IonRow>
+                  <IonCol size="5">
+                    <IonImg className="image-item" src="./assets/Book.jpg" />
+                  </IonCol>
+                  <IonCol size="6" id="items-desc">
+                    <h2>Judul Buku</h2>
+                    <h3>Rp 99.999</h3>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonCardContent>
+          </IonCard>
+        </IonItem>
 
-          <IonItem lines="none">
-            <IonCol>
-              <p>TOTAL PRICE</p>
-            </IonCol>
-            <IonCol className="ion-text-end">
-              <p>Rp 106.999</p>
-            </IonCol>
-          </IonItem>
+        <IonItem lines="none" id="total-price">
+          <IonCol>
+            <IonLabel>TOTAL PRICE</IonLabel>
+          </IonCol>
+          <IonCol className="ion-text-end">
+            <a>Rp 106.999</a>
+          </IonCol>
+        </IonItem>
 
-          <IonItem lines="none">
-            <IonCol className="ion-text-end">
-              <IonButton className="checkout-button  ion-padding-start" href="/tabs/home">
-                CHECKOUT
-              </IonButton>
-            </IonCol>
-          </IonItem>
-        </IonList>
-
-
+        <IonItem lines="none">
+          <IonCol className="ion-text-end">
+            <IonButton className="checkout-button ion-padding-start" href="/tabs/home">
+              CHECKOUT
+            </IonButton>
+          </IonCol>
+        </IonItem>
+      </IonList>
 
       </IonContent>
     </IonPage>

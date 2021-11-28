@@ -3,43 +3,33 @@ import './Theme.css';
 
 const EditProfile: React.FC = () => {
   return (
-    <IonPage>
+    <IonPage id="profile">
       <IonHeader>
         <IonToolbar className="title">
-          <IonTitle><b>Profile</b></IonTitle>
+          <IonTitle>Profile</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen className="ion-padding-start ion-padding-end">
-        <br />
-
+      <IonContent fullscreen className="ion-padding-start ion-padding-end ion-padding-top">
         <IonItem lines="none" className="info-profile">
-          <IonLabel color="white">NAME: </IonLabel>
+          <IonLabel>NAME : </IonLabel>
           <IonInput type="text" value="Nama saya"></IonInput>
         </IonItem>
 
-        <br />
-
         <IonItem lines="none" className="info-profile">
-          <IonLabel>ADDRESS: </IonLabel>
+          <IonLabel>ADDRESS : </IonLabel>
           <IonInput type="text" value="Bumi"></IonInput>
         </IonItem>
 
-        <br />
-
         <IonItem lines="none" className="info-profile">
-          <IonLabel>PHONE NUMBER: </IonLabel>
+          <IonLabel>PHONE NUMBER : </IonLabel>
           <IonInput type="number" value="12345678"></IonInput>
         </IonItem>
 
-        <br />
-
         <IonItem lines="none" className="info-profile">
-          <IonLabel>EMAIL: </IonLabel>
-          <IonInput type="email" value="saya@student.umn.ac.id"></IonInput>
+          <IonLabel>EMAIL : </IonLabel>
+          <IonInput type="email" disabled value="saya@student.umn.ac.id"></IonInput>
         </IonItem>
-
-        <br /><br />
 
         <IonCol className="ion-text-center">
           <IonRow>

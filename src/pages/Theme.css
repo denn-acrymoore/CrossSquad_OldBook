@@ -73,21 +73,27 @@ ion-content {
   --background:url('./Background/Empty.png') no-repeat 100% 100%;
   background-size: cover !important;
   object-fit: cover;
-
   width: 100%;
   height: 50%;
+  border-radius: 10px;
 }
 
 .card-empty h2{
   color:white;
-  font-size: large;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .card-empty ion-button{
   --border-radius: 15px;
   --background: white;
   --color: #495C6A;
+  text-transform: none;
+  width: auto;
+  font-size: 16px;
 }
+
 
 /* Welcome Page */
 .button-welcome {
@@ -184,6 +190,7 @@ ion-content {
   border-radius: 10px;
 }
 
+
 /* Register */
 .text-register h1{
   font-size: 60px;
@@ -236,6 +243,7 @@ ion-content {
   border-radius: 10px;
 }
 
+
 /* Tabs */
 .tabs-css{
   --background:#FCEDCC ;
@@ -251,6 +259,7 @@ ion-content {
 .tabs-css ion-icon {
   font-size: 32px;
 }
+
 
 /* Home */
 #home ion-title {
@@ -356,59 +365,147 @@ ion-content {
   height: 40px;
   width: 200px;
   --background: #83A8B0;
-  font-size: 20px;
-  text-transform: none;
+  font-size: 16px;
+  /* text-transform: none; */
   border-radius: 10px;
 }
 
 
-
 /* Sell Page */
+#sell ion-title {
+  font-family: 'Rosarivo';
+  font-size: 32px;
+  margin-top: 10px;
+}
+
 .card-sell{
   --background:#83A8B0;
   --color:white;
   width: 100%;
-  height: 150px;
+  height: auto;
+  border-radius: 20px;
+  padding: 0px !important;
+}
+
+.card-sell h2, .card-sell h5 {
+  margin-bottom: 5px;
+  margin-right: -20px;
+}
+
+.card-sell h6 {
+  margin-right: -10px;
+}
+
+.card-sell .image-sec3 {
+  min-width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+  margin-left: -10px;
+}
+
+.card-sell ion-item-option {
+  width: 50px;
+  padding-left: 0px;
+}
+
+.card-sell ion-icon {
+  font-size: 30px;
 }
 
 .fab-button{
   --background: #495C6A;
 }
 
-ion-input.input-sell {
+.input-sell {
   border: 1px solid #83A8B0;
   border-radius: 5px;
   --background: #83A8B0;
   color: white;
 }
 
-ion-button.upload-sell{
+#sell ion-label {
+  font-size: 22px;
+}
+
+#sell ion-input {
+  margin-bottom: 15px;
+}
+
+#sell #here {
+  margin-top: 10px;
+}
+
+.upload-sell{
   --border-radius: 10px;
   --background:#FCEDCC;
   --color:black;
   width: 40%;
+  font-size: 18px;
+  margin-bottom: 40px;
 }
 
-ion-button.save-sell{
+.save-sell{
   --border-radius: 10px;
   --background:#495C6A;
   --color:white;
-  width: 100%;
+  width: 90%;
+  font-size: 16px;
+  text-transform: none;
+  margin-left: 10px;
 }
 
-ion-button.cancel-sell{
+.cancel-sell{
   --border-radius: 10px;
   --background:#FF4545;
   --color:white;
-  width: 100%;
+  width: 90%;
+  font-size: 16px;
+  text-transform: none;
+  margin-right: 10px;
 }
 
+
 /* Cart */
+#cart ion-title {
+  font-family: 'Rosarivo';
+  font-size: 32px;
+  margin-top: 10px;
+}
+
 .card-cart{
   --background:#83A8B0;
   --color:white;
   width: 100%;
-  height: 150px;
+  height: auto;
+  border-radius: 20px;
+  padding: 0px !important;
+}
+
+.card-cart h2, .card-cart h5 {
+  margin-bottom: 5px;
+  margin-right: -20px;
+}
+
+.card-cart h6 {
+  margin-right: -10px;
+}
+
+.card-cart .image-sec3 {
+  min-width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+  margin-left: -10px;
+}
+
+.card-cart ion-item-option {
+  width: 50px;
+  padding-left: 0px;
+}
+
+.card-cart ion-icon {
+  font-size: 30px;
 }
 
 .checkout-button ion-button{
@@ -416,24 +513,47 @@ ion-button.cancel-sell{
   --border-radius: 15px;
   --background: #495C6A;
   --color: white;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
-/* Checkout */
 
-.list-checkout h5{
-  --color: black;
+/* Checkout */
+#cart ion-label {
+  margin-top: 20px;
+  font-weight: bold;
+  color: black;
+  font-size: 20px;
 }
 
 .card-checkout{
   background: #83A8B0;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
-.card-checkout h3 ,h5 ,h6{
-  --color: white;
+.card-checkout h4, .card-checkout h5 , .card-checkout h6{
+  color: white;
+  padding: 0px;
+  margin: 0px;
 }
 
-.numeric-checkout{
-  --color: #9E3F05;
+.card-checkout h4 {
+  font-size: 24px;
+  margin-bottom: 3px;
+}
+
+.card-checkout h5 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+#courier-type {
+  color: #495C6A;
+}
+
+#courier-price{
+  color: #9E3F05;
 }
 
 .card-list-item{
@@ -442,41 +562,71 @@ ion-button.cancel-sell{
   --color:black;
   width: 100%;
   height: fit-content;
+  padding: 0px;
+  margin: 0px;
 }
 
 .image-item{
   min-width: 100%;
-  height: 60px;
+  height: 80px;
   object-fit: cover;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: -5px;
+  margin-right: 5px;
+}
+
+#total-price a {
+  color: #9E3F05;
 }
 
 ion-button.checkout-button{
   --border-radius: 10px;
   --background:#495C6A;
   --color:white;
-  width: 40%;
+  width: 45%;
+  height: 40px;
+  font-size: 16px;
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 /* Profile */
-ion-label.info-profile{
-  --color:white;
+#profile ion-title {
+  font-family: 'Rosarivo';
+  font-size: 32px;
+  margin-top: 10px;
+}
+
+#profile ion-item {
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .info-profile{
   --background:#83A8B0;
   --color: white;
-  border-radius: 5px;
+  border-radius: 10px;
+}
+
+.info-profile ion-label {
+  color:white;
+  font-size: 18px !important;
+}
+
+.info-profile ion-input {
+  color: white;
+  font-size: 16px;
 }
 
 .btn1-profile{
   width: 70%;
   --background:#4b5e6c;
+  font-size: 16px;
+  margin-top: 20%;
 }
 
 .btn2-profile{
   width: 70%;
   --background:#FF4545;
+  font-size: 16px;
 }

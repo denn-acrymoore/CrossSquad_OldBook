@@ -30,35 +30,29 @@ const InputSell: React.FC = () => {
   };
 
   return (
-    <IonPage>
+    <IonPage id="sell">
       <IonHeader>
         <IonToolbar className="title">
-          <IonTitle><b>Sell</b></IonTitle>
+          <IonTitle>Sell</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen className="ion-padding-start ion-padding-end">
-        <div className="ion-padding-top">
-          <IonLabel className="text">Book's Name</IonLabel>
+      <IonContent id="page-input-sell" fullscreen className="ion-padding-start ion-padding-end">
+        <div className="ion-padding-top" id="here">
+          <IonLabel className="text" id="sell-here">Book's Name</IonLabel>
           <IonInput type="text" className="input-sell"></IonInput>
-
-          <br />
 
           <IonLabel className="text">Book's Description</IonLabel>
           <IonInput type="text" className="input-sell"></IonInput>
 
-          <br />
-
           <IonLabel className="text">Book's Price</IonLabel>
           <IonInput type="number" className="input-sell"></IonInput>
-
-          <br />
 
           <IonLabel className="text">Upload Photo</IonLabel>
           <IonRow>
             <IonCol>
               <IonButton className="upload-sell" onClick={takePhotoHandler}>
-                <IonLabel>Upload</IonLabel>
+                Upload
               </IonButton>
             </IonCol>
           </IonRow>
@@ -74,12 +68,12 @@ const InputSell: React.FC = () => {
         <IonRow>
           <IonCol>
             <IonButton className="save-sell" href="/tabs/sell">
-              <IonLabel>Save and Sell</IonLabel>
+              Save and Sell
             </IonButton>
           </IonCol>
           <IonCol>
             <IonButton className="cancel-sell" href="/tabs/sell">
-              <IonLabel>Cancel</IonLabel>
+              Cancel
             </IonButton>
           </IonCol>
         </IonRow>
