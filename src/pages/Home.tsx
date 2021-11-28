@@ -25,15 +25,15 @@ const Home: React.FC = () => {
 
           <IonCardContent className="wrapper card-home">
             <IonButton href="/tabs/productDetail">
-              <IonImg src="./assets/buku1.jpg" />
+              <IonImg src="assets/Buku1.jpg" />
             </IonButton>
 
             <IonButton>
-              <IonImg src="./assets/buku2.jpg" />
+              <IonImg src="assets/Buku2.jpg" />
             </IonButton>
 
             <IonButton>
-              <IonImg src="./assets/buku3.jpg" />
+              <IonImg src="assets/Buku3.jpg" />
               {/* <IonFab vertical="bottom" horizontal="start">
                 <h1><b>Book</b></h1>
               </IonFab> */}
@@ -48,7 +48,7 @@ const Home: React.FC = () => {
             <IonCol size="6" className="ion-text-center">
               <IonCard>
                 <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
-                  <IonImg src="./assets/buku4.jpg" />
+                  <IonImg src="assets/Buku4.jpg" />
                 </IonButton>
                 <h4>Rich and Poor Dad</h4>
               </IonCard>
@@ -57,7 +57,7 @@ const Home: React.FC = () => {
             <IonCol size="6" className="ion-text-center">
               <IonCard>
                 <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
-                  <IonImg className="image-sec2" src="./assets/buku5.jpg" />
+                  <IonImg className="image-sec2" src="assets/Buku5.jpg" />
                 </IonButton>
                 <h4>Geografi kelas 11</h4>
               </IonCard>
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
             <IonCol size="6" className="ion-text-center">
               <IonCard>
                 <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
-                  <IonImg src="./assets/buku6.jpg" />
+                  <IonImg src="assets/Buku6.jpg" />
                 </IonButton>
                 <h4>Buku Bahasa Indonesia Kelas 8</h4>
               </IonCard>
@@ -77,7 +77,7 @@ const Home: React.FC = () => {
             <IonCol size="6" className="ion-text-center">
               <IonCard>
                 <IonButton fill="clear" className="image-sec2" href="/tabs/productdetail">
-                  <IonImg className="image-sec2" src="./assets/buku7.jpg" />
+                  <IonImg className="image-sec2" src="assets/Buku7.jpg" />
                 </IonButton>
                 <h4>Miss Irresistible Stylist</h4>
               </IonCard>

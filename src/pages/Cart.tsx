@@ -38,7 +38,7 @@ const Cart: React.FC = () => {
                 <IonGrid>
                   <IonRow>
                     <IonCol size="5">
-                      <IonImg className="image-sec3" src="./assets/buku7.jpg" />
+                      <IonImg className="image-sec3" src="assets/Buku7.jpg" />
                     </IonCol>
                     <IonCol size="7">
                       <h2>Miss Irresistible Stylist</h2>

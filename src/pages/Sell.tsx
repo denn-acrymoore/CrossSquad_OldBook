@@ -38,7 +38,7 @@ const Sell: React.FC = () => {
                 <IonGrid>
                   <IonRow>
                     <IonCol size="5">
-                      <IonImg className="image-sec3" src="./assets/buku8.jpg" />
+                      <IonImg className="image-sec3" src="assets/Buku8.jpg" />
                     </IonCol>
                     <IonCol size="7">
                       <h2>Saham Anda Lebih Mahal !!! Santo Vibby</h2>

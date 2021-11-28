@@ -11,7 +11,7 @@ const HomeProductDetail: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen className="ion-padding-start ion-padding-end">
         <IonCol className="image-detail">
-          <IonImg src="./assets/buku1.jpg" className="image-detail" />
+          <IonImg src="assets/Buku7.jpg" className="image-detail" />
         </IonCol>
 
         <IonRow id="product-detail">

@@ -39,7 +39,7 @@ const Checkout: React.FC = () => {
                 <IonGrid>
                   <IonRow>
                     <IonCol size="5">
-                      <IonImg className="image-item" src="./assets/buku7.jpg" />
+                      <IonImg className="image-item" src="assets/Buku7.jpg" />
                     </IonCol>
                     <IonCol size="6" id="items-desc">
                       <h2>Miss Irresistible Stylist</h2>
