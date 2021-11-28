@@ -30,7 +30,7 @@ const Welcome: React.FC = () => {
           </IonRow>
         </IonCol>
 
-        <img src="assets/images/background.png" />
+        <img src="assets/images/Background.png" />
       </IonContent>
     </IonPage>
   );
