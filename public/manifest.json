@@ -1,15 +1,15 @@
 {
-  "short_name": "Ionic App",
-  "name": "My Ionic App",
+  "short_name": "OldBook",
+  "name": "OldBook",
   "icons": [
     {
-      "src": "assets/icon/favicon.png",
+      "src": "assets/icon/logo_fav_web.jpg",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "assets/icon/icon.png",
-      "type": "image/png",
+      "src": "assets/icon/logo_fav_web.jpg",
+      "type": "image/jpg",
       "sizes": "512x512",
       "purpose": "maskable"
     }
