@@ -1,7 +1,21 @@
-import { IonButton, IonGrid, IonRow, IonCol, IonFab, IonContent, IonImg, IonPage } from '@ionic/react';
+import { IonButton, IonRow, IonCol, IonContent, IonPage } from '@ionic/react';
 import './Theme.css';
+import React, { useContext, useEffect } from "react";
+import { OldBookContext } from '../data/OldBookContext';
+import { useHistory } from 'react-router';
 
 const Welcome: React.FC = () => {
+  const oldBookCtx = useContext(OldBookContext);
+  const {currUser} = oldBookCtx;
+  const history = useHistory();
+  
+  // If already signed in, navigate to main page:
+  useEffect(() => {    
+    if (currUser != null) {
+        history.replace("/tabs");
+    }
+}, [currUser]);
+
   return (
     <IonPage id="welcome">
       <IonContent className="background" scrollY={false}>

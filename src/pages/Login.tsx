@@ -4,34 +4,35 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { OldBookContext } from '../data/OldBookContext';
 
 import firebaseApp from '../InitializeFirebase';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, User } from "firebase/auth";
 import { useHistory } from 'react-router';
 
 /*Login Page*/
 const Login: React.FC = () => {
+  const oldBookCtx = useContext(OldBookContext);
+  const {currUser} = oldBookCtx;
   const history = useHistory();
+  
+  // If already signed in, navigate to main page:
+  useEffect(() => {    
+    if (currUser != null) {
+        history.replace("/tabs");
+    }
+}, [currUser]);
 
   const emailInputRef = useRef<HTMLIonInputElement>(null);
   const passInputRef = useRef<HTMLIonInputElement>(null);
   
   const auth = getAuth(firebaseApp);
-  const user = auth.currentUser;
 
-  // Check if user already signed-in:
-  if (user) {
-    // User is signed in
-    history.replace("/tabs/home");
-  }
-
-
-  const oldBookCtx = useContext(OldBookContext);
-
-  const handleLogin = async () => {
+  const handleLogin = () => {
     const enteredEmail = emailInputRef.current?.value;
     const enteredPass = passInputRef.current?.value;
 
-    const regex = /\s/;
+    const spaceRegex = /\s/;
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
+    // Check if input is empty:
     if (!enteredEmail || enteredEmail.toString().length === 0) {
       oldBookCtx.showToast("Email input must be filled!");
       return;
@@ -42,19 +43,27 @@ const Login: React.FC = () => {
       return;
     }
 
-    if (regex.test(enteredEmail.toString())) {
-      oldBookCtx.showToast("Email input cannot contain space");
+    // Check if input contains spaces:
+    if (spaceRegex.test(enteredEmail.toString())) {
+      oldBookCtx.showToast("Email input cannot contain space!");
       return;
     }
 
-    if (regex.test(enteredPass.toString())) {
-      oldBookCtx.showToast("Password input cannot contain space");
+    if (spaceRegex.test(enteredPass.toString())) {
+      oldBookCtx.showToast("Password input cannot contain space!");
+      return;
+    }
+
+    // Check if email valid:
+    if (!emailRegex.test(enteredEmail.toString())) {
+      oldBookCtx.showToast("Invalid email address!");
       return;
     }
 
     signInWithEmailAndPassword(auth, enteredEmail.toString(), enteredPass.toString())
       .then((userCredential) => {
-        history.replace("/tabs/home");
+        oldBookCtx.showToast("Login successful!");
+        history.replace("/tabs");
       })
       .catch((error) => {
         oldBookCtx.showToast("Incorrect email or password");
@@ -103,7 +112,11 @@ const Login: React.FC = () => {
 
         <IonRow>
           <IonCol className="ion-text-center">
-            <IonButton className="button-login" type='submit' onClick={handleLogin}>
+            <IonButton 
+              className="button-login" 
+              type='submit' 
+              onClick={handleLogin}
+            >
               SIGN IN
             </IonButton>
           </IonCol>

@@ -2,14 +2,23 @@ import { IonButton, IonRow, IonCol, IonContent, IonPage, IonCard, IonCardContent
 import './Theme.css';
 
 import firebaseApp from '../InitializeFirebase';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, UserCredential, AuthError, onAuthStateChanged } from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useHistory } from 'react-router';
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { OldBookContext } from '../data/OldBookContext';
 
 const Register: React.FC = () => {
+  const oldBookCtx = useContext(OldBookContext);
+  const {currUser} = oldBookCtx;
   const history = useHistory();
+  
+  // If already signed in, navigate to main page:
+  useEffect(() => {    
+    if (currUser != null) {
+        history.replace("/tabs");
+    }
+}, [currUser]);
 
   const emailInputRef = useRef<HTMLIonInputElement>(null);
   const passInputRef = useRef<HTMLIonInputElement>(null);
@@ -20,17 +29,8 @@ const Register: React.FC = () => {
 
   const auth = getAuth(firebaseApp);
   const db = getFirestore(firebaseApp);
-  const user = auth.currentUser;
 
-  // Check if user already signed-in:
-  if (user) {
-    // User is signed in
-    history.replace("/tabs/home");
-  }
-
-  const oldBookCtx = useContext(OldBookContext);
-
-  const handleRegister = async () =>
+  const handleRegister = () =>
   {
     let enteredEmail = emailInputRef.current?.value;
     let enteredPass = passInputRef.current?.value;
@@ -39,18 +39,21 @@ const Register: React.FC = () => {
     let enteredAddress = addressInputRef.current?.value;
     let enteredPhoneNumber = phoneNumberInputRef.current?.value;
 
+    const spaceRegex = /\s/;
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
     // Check if input is empty:
-    if (!enteredEmail || enteredEmail.toString().trim().length === 0) {
+    if (!enteredEmail || enteredEmail.toString().length === 0) {
       oldBookCtx.showToast("Email input must be filled!");
       return;
     }
 
-    if (!enteredPass || enteredPass.toString().trim().length === 0) {
+    if (!enteredPass || enteredPass.toString().length === 0) {
       oldBookCtx.showToast("Password input must be filled!");
       return;
     }
 
-    if (!enteredConfirmPass || enteredConfirmPass.toString().trim().length === 0) {
+    if (!enteredConfirmPass || enteredConfirmPass.toString().length === 0) {
       oldBookCtx.showToast("Confirm password input must be filled!");
       return;
     }
@@ -69,14 +72,49 @@ const Register: React.FC = () => {
       return;
     }
 
-    // Trim regular input:
+    // Check if input contains space:
+    if (spaceRegex.test(enteredEmail.toString())) {
+      oldBookCtx.showToast("Email input cannot contain space!");
+      return;
+    }
 
+    if (spaceRegex.test(enteredPass.toString())) {
+      oldBookCtx.showToast("Password input cannot contain space!");
+      return;
+    }
+
+    if (spaceRegex.test(enteredConfirmPass.toString())) {
+      oldBookCtx.showToast("Confirm password input cannot contain space!");
+      return;
+    }
+
+    // Check if email valid:
+    if (!emailRegex.test(enteredEmail.toString())) {
+      oldBookCtx.showToast("Invalid email address!");
+      return;
+    }
 
     // Check if enteredPhoneNumber is a number:
     if (Number(enteredPhoneNumber) === NaN) {
       oldBookCtx.showToast("Phone number input must be numeric!");
       return;
     }
+
+    createUserWithEmailAndPassword(auth, enteredEmail.toString(), enteredPass.toString())
+      .then((userCredential: UserCredential) => {
+        oldBookCtx.showToast("Registration successful!");
+        history.replace("/tabs");
+      })
+      .catch((error: AuthError) =>  {
+        if (error.code === "auth/email-already-in-use") {
+          console.log("Error: Email already registered!");
+          oldBookCtx.showToast("Error: Email already registered!");
+        }
+        else {
+          console.log("Error registering new account: " + error.message);
+          oldBookCtx.showToast("Error registering new account: " + error.message);
+        }
+      })
   }
 
   return (
@@ -104,7 +142,7 @@ const Register: React.FC = () => {
             <IonInput 
               type="email" 
               className="input-register"
-              ref={ emailInputRef }
+              ref={emailInputRef}
               required={true}
             ></IonInput>
 
@@ -112,7 +150,7 @@ const Register: React.FC = () => {
             <IonInput 
               type="password" 
               className="input-register"
-              ref={ passInputRef }
+              ref={passInputRef}
               required={true}
             ></IonInput>
 
@@ -120,7 +158,7 @@ const Register: React.FC = () => {
             <IonInput 
               type="password" 
               className="input-register"
-              ref={ confirmPassInputRef } 
+              ref={confirmPassInputRef} 
               required={true}
             ></IonInput>
 
@@ -128,7 +166,7 @@ const Register: React.FC = () => {
             <IonInput 
               type="text" 
               className="input-register"
-              ref={ nameInputRef }  
+              ref={nameInputRef}  
               required={true}
             ></IonInput>
 
@@ -136,7 +174,7 @@ const Register: React.FC = () => {
             <IonInput 
               type="text" 
               className="input-register"
-              ref={ addressInputRef }
+              ref={addressInputRef}
               required={true}
             ></IonInput>
 
@@ -145,7 +183,7 @@ const Register: React.FC = () => {
               type="text" 
               className="input-register" 
               id="here"
-              ref={ phoneNumberInputRef }
+              ref={phoneNumberInputRef}
               required={true}
             ></IonInput>
           </IonCardContent>
@@ -155,7 +193,7 @@ const Register: React.FC = () => {
           <IonCol className="ion-text-center padding">
             <IonButton 
               className="button-register" 
-              onClick={ handleRegister }
+              onClick={handleRegister}
               type='submit'
             >
               SIGN UP
