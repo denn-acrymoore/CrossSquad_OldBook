@@ -13,6 +13,8 @@ const Login: React.FC = () => {
   const {currUser} = oldBookCtx;
   const history = useHistory();
 
+  const auth = getAuth(firebaseApp);
+  
   const [handleLoginActivated, setHandleLoginActivated] = useState<boolean>(false);
   
   // If already signed in, navigate to main page:
@@ -26,7 +28,6 @@ const Login: React.FC = () => {
   const emailInputRef = useRef<HTMLIonInputElement>(null);
   const passInputRef = useRef<HTMLIonInputElement>(null);
   
-  const auth = getAuth(firebaseApp);
 
   const handleLogin = () => {
     const enteredEmail = emailInputRef.current?.value;

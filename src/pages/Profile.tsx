@@ -8,7 +8,7 @@ import './Theme.css';
 
 const Profile: React.FC = () => {
   const oldBookCtx = useContext(OldBookContext);
-  const {currUser} = oldBookCtx;
+  const {currUserFirestore} = oldBookCtx;
   const history = useHistory();
 
   const auth = getAuth();
@@ -47,22 +47,22 @@ const Profile: React.FC = () => {
       <IonContent fullscreen className="ion-padding-start ion-padding-end ion-padding-top">
         <IonItem lines="none" className="info-profile">
           <IonLabel>NAME : </IonLabel>
-          <IonInput type="text" readonly value="Cantika"></IonInput>
+          <IonInput type="text" readonly value={currUserFirestore?.name}></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>ADDRESS : </IonLabel>
-          <IonInput type="text" readonly value="Jl. Kemayoran No. 127"></IonInput>
+          <IonInput type="text" readonly value={currUserFirestore?.address}></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>PHONE NUMBER : </IonLabel>
-          <IonInput type="number" readonly value="081247191991"></IonInput>
+          <IonInput type="number" readonly value={currUserFirestore?.phoneNumber}></IonInput>
         </IonItem>
 
         <IonItem lines="none" className="info-profile">
           <IonLabel>EMAIL : </IonLabel>
-          <IonInput type="email" readonly value="cantika@gmail.com"></IonInput>
+          <IonInput type="email" readonly value={currUserFirestore?.email}></IonInput>
         </IonItem>
 
         <IonCol className="ion-text-center">

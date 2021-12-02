@@ -13,6 +13,9 @@ const Register: React.FC = () => {
   const {currUser} = oldBookCtx;
   const history = useHistory();
   
+  const auth = getAuth(firebaseApp);
+  const db = getFirestore(firebaseApp);
+  
   const [handleRegisterActivated, setHandleRegisterActivated] = useState<boolean>(false);
 
   // If already signed in, navigate to main page:
@@ -30,8 +33,6 @@ const Register: React.FC = () => {
   const addressInputRef = useRef<HTMLIonInputElement>(null);
   const phoneNumberInputRef = useRef<HTMLIonInputElement>(null);
 
-  const auth = getAuth(firebaseApp);
-  const db = getFirestore(firebaseApp);
 
   const handleRegister = () =>
   {
@@ -121,7 +122,7 @@ const Register: React.FC = () => {
     }
 
     // Check if enteredPhoneNumber is a number:
-    if (!numberRegex.test(enteredPhoneNumber.toString().trim())) {
+    if (!numberRegex.test(enteredPhoneNumber.toString())) {
       oldBookCtx.showToast("Phone number input must be an 12 digit number!");
       return;
     }
@@ -130,10 +131,10 @@ const Register: React.FC = () => {
     createUserWithEmailAndPassword(auth, enteredEmail.toString(), enteredPass.toString())
       .then((userCredential: UserCredential) => {
         const data = {
-          "email": enteredEmail!.toString(),
-          "name": enteredName!.toString(),
-          "address": enteredAddress!.toString(),
-          "phoneNumber": enteredPhoneNumber!.toString(),
+          "email": enteredEmail!.toString().trim(),
+          "name": enteredName!.toString().trim(),
+          "address": enteredAddress!.toString().trim(),
+          "phoneNumber": enteredPhoneNumber!.toString().trim(),
         };
         
         setDoc(doc(db, "users", userCredential.user.uid), data)
@@ -224,7 +225,7 @@ const Register: React.FC = () => {
 
             <IonLabel className="text">Phone Number</IonLabel>
             <IonInput 
-              type="text" 
+              type="number" 
               className="input-register" 
               id="here"
               ref={phoneNumberInputRef}
