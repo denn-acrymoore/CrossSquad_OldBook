@@ -91,6 +91,11 @@ const Register: React.FC = () => {
       oldBookCtx.showToast("Confirm password input cannot contain space!");
       return;
     }
+    
+    if (spaceRegex.test(enteredPhoneNumber.toString())) {
+      oldBookCtx.showToast("Phone number cannot contain space!");
+      return;
+    }
 
     // Check if email valid:
     if (!emailRegex.test(enteredEmail.toString())) {
