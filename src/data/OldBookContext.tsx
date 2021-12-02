@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Toast } from "@capacitor/toast";
 import firebaseApp from "../InitializeFirebase";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-import { useHistory } from "react-router";
 
 export const OldBookContext = React.createContext
 <{

@@ -2,10 +2,10 @@ import { IonButton, IonRow, IonCol, IonContent, IonPage, IonCard, IonCardContent
 import './Theme.css';
 
 import firebaseApp from '../InitializeFirebase';
-import { getAuth, createUserWithEmailAndPassword, UserCredential, AuthError, onAuthStateChanged } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, UserCredential, AuthError, deleteUser } from "firebase/auth";
+import { doc, FirestoreError, getFirestore, setDoc } from "firebase/firestore";
 import { useHistory } from 'react-router';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { OldBookContext } from '../data/OldBookContext';
 
 const Register: React.FC = () => {
@@ -13,12 +13,15 @@ const Register: React.FC = () => {
   const {currUser} = oldBookCtx;
   const history = useHistory();
   
+  const [handleRegisterActivated, setHandleRegisterActivated] = useState<boolean>(false);
+
   // If already signed in, navigate to main page:
   useEffect(() => {    
-    if (currUser != null) {
-        history.replace("/tabs");
+    if (currUser != null && !handleRegisterActivated) {
+      oldBookCtx.showToast("Welcome back!");
+      history.replace("/tabs/home");
     }
-}, [currUser]);
+  }, [currUser]);
 
   const emailInputRef = useRef<HTMLIonInputElement>(null);
   const passInputRef = useRef<HTMLIonInputElement>(null);
@@ -41,6 +44,7 @@ const Register: React.FC = () => {
 
     const spaceRegex = /\s/;
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const numberRegex = /^\d{12}$/
 
     // Check if input is empty:
     if (!enteredEmail || enteredEmail.toString().length === 0) {
@@ -94,18 +98,53 @@ const Register: React.FC = () => {
       return;
     }
 
-    // Check if enteredPhoneNumber is a number:
-    if (Number(enteredPhoneNumber) === NaN) {
-      oldBookCtx.showToast("Phone number input must be numeric!");
+    // Check if password length is at least 8 characters:
+    if (enteredPass.toString().length < 8) {
+      oldBookCtx.showToast("Minimum password input length = 8 characters!");
       return;
     }
 
+    if (enteredConfirmPass.toString().length < 8) {
+      oldBookCtx.showToast("Minimum confirm password input length = 8 characters!");
+      return;
+    }
+
+    // Check if password is the same as confirm password:
+    if (enteredPass.toString() !== enteredConfirmPass.toString()) {
+      oldBookCtx.showToast("Password and confirm password must be same!");
+      return;
+    }
+
+    // Check if enteredPhoneNumber is a number:
+    if (!numberRegex.test(enteredPhoneNumber.toString().trim())) {
+      oldBookCtx.showToast("Phone number input must be an 12 digit number!");
+      return;
+    }
+
+    setHandleRegisterActivated(true);
     createUserWithEmailAndPassword(auth, enteredEmail.toString(), enteredPass.toString())
       .then((userCredential: UserCredential) => {
-        oldBookCtx.showToast("Registration successful!");
-        history.replace("/tabs");
+        const data = {
+          "email": enteredEmail!.toString(),
+          "name": enteredName!.toString(),
+          "address": enteredAddress!.toString(),
+          "phoneNumber": enteredPhoneNumber!.toString(),
+        };
+        
+        setDoc(doc(db, "users", userCredential.user.uid), data)
+          .then(() => {
+            oldBookCtx.showToast("Registration successful!");
+            history.replace("/tabs/home");
+          })
+          .catch((error: FirestoreError) => {
+            deleteUser(userCredential.user);
+
+            console.log("Error registering new account: " + error.message);
+            oldBookCtx.showToast("Error registering new account: " + error.message);
+          });
       })
       .catch((error: AuthError) =>  {
+        setHandleRegisterActivated(false);
         if (error.code === "auth/email-already-in-use") {
           console.log("Error: Email already registered!");
           oldBookCtx.showToast("Error: Email already registered!");

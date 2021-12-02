@@ -12,9 +12,10 @@ const Welcome: React.FC = () => {
   // If already signed in, navigate to main page:
   useEffect(() => {    
     if (currUser != null) {
-        history.replace("/tabs");
+      oldBookCtx.showToast("Welcome back!");
+      history.replace("/tabs/home");
     }
-}, [currUser]);
+  }, [currUser]);
 
   return (
     <IonPage id="welcome">

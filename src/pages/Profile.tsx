@@ -3,6 +3,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { OldBookContext } from '../data/OldBookContext';
+import { ActionSheet } from "@capacitor/action-sheet";
 import './Theme.css';
 
 const Profile: React.FC = () => {
@@ -11,20 +12,28 @@ const Profile: React.FC = () => {
   const history = useHistory();
 
   const auth = getAuth();
-  
-  // If user not signed in, navigate to welcome page:
-  useEffect(() => {    
-    if (currUser === null) {
-        history.replace("/");
-    }
-  }, [currUser]);
 
-  const handleLogout = () => {
-    signOut(auth).then(() => {
-      oldBookCtx.showToast("Sign out successful!");
-    }).catch((error) => {
-      oldBookCtx.showToast("Error logging out user: " + error.message);
+  const handleLogout = async () => {
+    const result = await ActionSheet.showActions({
+      title: "Are you sure you want to logout?",
+      options: [
+        {
+          title: "Yes"
+        },
+        {
+          title: "No"
+        }
+      ],
     });
+
+    if (result.index === 0) {
+      signOut(auth).then(() => {
+        oldBookCtx.showToast("Log out successful!");
+        history.replace("/welcome");
+      }).catch((error) => {
+        oldBookCtx.showToast("Error logging out user: " + error.message);
+      });
+    }
   }
 
   return (

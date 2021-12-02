@@ -12,13 +12,16 @@ const Login: React.FC = () => {
   const oldBookCtx = useContext(OldBookContext);
   const {currUser} = oldBookCtx;
   const history = useHistory();
+
+  const [handleLoginActivated, setHandleLoginActivated] = useState<boolean>(false);
   
   // If already signed in, navigate to main page:
   useEffect(() => {    
-    if (currUser != null) {
-        history.replace("/tabs");
+    if (currUser != null && !handleLoginActivated) {
+      oldBookCtx.showToast("Welcome back!");
+      history.replace("/tabs/home");
     }
-}, [currUser]);
+  }, [currUser]);
 
   const emailInputRef = useRef<HTMLIonInputElement>(null);
   const passInputRef = useRef<HTMLIonInputElement>(null);
@@ -60,12 +63,14 @@ const Login: React.FC = () => {
       return;
     }
 
+    setHandleLoginActivated(true);
     signInWithEmailAndPassword(auth, enteredEmail.toString(), enteredPass.toString())
       .then((userCredential) => {
         oldBookCtx.showToast("Login successful!");
-        history.replace("/tabs");
+        history.replace("/tabs/home");
       })
       .catch((error) => {
+        setHandleLoginActivated(false);
         oldBookCtx.showToast("Incorrect email or password");
       });
   };
