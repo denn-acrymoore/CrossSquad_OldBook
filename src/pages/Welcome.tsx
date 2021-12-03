@@ -1,4 +1,4 @@
-import { IonButton, IonRow, IonCol, IonContent, IonPage } from '@ionic/react';
+import { IonButton, IonRow, IonCol, IonContent, IonPage, IonLoading } from '@ionic/react';
 import './Theme.css';
 import React, { useContext, useEffect } from "react";
 import { OldBookContext } from '../data/OldBookContext';
@@ -6,20 +6,30 @@ import { useHistory } from 'react-router';
 
 const Welcome: React.FC = () => {
   const oldBookCtx = useContext(OldBookContext);
-  const {currUser} = oldBookCtx;
+  const {currUserFirestore} = oldBookCtx;
+  const {isOnAuthStateChangedCalled} = oldBookCtx;
   const history = useHistory();
   
   // If already signed in, navigate to main page:
   useEffect(() => {    
-    if (currUser != null) {
+    if (currUserFirestore !== null && currUserFirestore !== undefined) {
       oldBookCtx.showToast("Welcome back!");
       history.replace("/tabs/home");
     }
-  }, [currUser]);
+  }, [currUserFirestore]);
 
   return (
     <IonPage id="welcome">
       <IonContent className="background" scrollY={false}>
+        <IonLoading 
+          isOpen={!isOnAuthStateChangedCalled}
+          spinner="crescent"
+          keyboardClose={true}
+          backdropDismiss={false}
+          duration={2000}
+          showBackdrop={true}
+        />
+
         <IonCol>
           <IonRow>
             <IonCol className="ion-text-center padding text-welcome">
@@ -30,7 +40,10 @@ const Welcome: React.FC = () => {
 
           <IonRow>
             <IonCol className="ion-text-center padding">
-              <IonButton className="button-welcome" href="/login">
+              <IonButton 
+                className="button-welcome" 
+                onClick={() => {history.replace("/login");}}
+              >
                 LOGIN
               </IonButton>
             </IonCol>
@@ -38,7 +51,10 @@ const Welcome: React.FC = () => {
 
           <IonRow id="welcome-bottom">
             <IonCol className="ion-text-center padding">
-              <IonButton className="button-welcome" href="/register">
+              <IonButton 
+                className="button-welcome"
+                onClick={() => {history.replace("/register");}} 
+              >
                 REGISTER
               </IonButton>
             </IonCol>

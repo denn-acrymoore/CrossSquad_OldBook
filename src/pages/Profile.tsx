@@ -29,6 +29,7 @@ const Profile: React.FC = () => {
     if (result.index === 0) {
       signOut(auth).then(() => {
         oldBookCtx.showToast("Log out successful!");
+        oldBookCtx.setCurrUserFirestore(null);
         history.replace("/welcome");
       }).catch((error) => {
         oldBookCtx.showToast("Error logging out user: " + error.message);
@@ -68,7 +69,12 @@ const Profile: React.FC = () => {
         <IonCol className="ion-text-center">
           <IonRow>
             <IonCol>
-              <IonButton className="btn1-profile" href="/tabs/editprofile">EDIT</IonButton>
+              <IonButton 
+                className="btn1-profile" 
+                onClick={() => {history.push("/tabs/editprofile");}}
+              >
+                EDIT
+              </IonButton>
             </IonCol>
           </IonRow>
 

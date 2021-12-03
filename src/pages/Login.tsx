@@ -10,7 +10,7 @@ import { useHistory } from 'react-router';
 /*Login Page*/
 const Login: React.FC = () => {
   const oldBookCtx = useContext(OldBookContext);
-  const {currUser} = oldBookCtx;
+  const {currUserFirestore} = oldBookCtx;
   const history = useHistory();
 
   const auth = getAuth(firebaseApp);
@@ -19,11 +19,17 @@ const Login: React.FC = () => {
   
   // If already signed in, navigate to main page:
   useEffect(() => {    
-    if (currUser != null && !handleLoginActivated) {
+    if (currUserFirestore !== null && currUserFirestore !== undefined 
+    && !handleLoginActivated) {
       oldBookCtx.showToast("Welcome back!");
       history.replace("/tabs/home");
     }
-  }, [currUser]);
+    else if (currUserFirestore !== null && currUserFirestore !== undefined 
+      && handleLoginActivated) {
+      oldBookCtx.showToast("Login successful!");
+      history.replace("/tabs/home");
+    }
+  }, [currUserFirestore]);
 
   const emailInputRef = useRef<HTMLIonInputElement>(null);
   const passInputRef = useRef<HTMLIonInputElement>(null);
@@ -66,10 +72,6 @@ const Login: React.FC = () => {
 
     setHandleLoginActivated(true);
     signInWithEmailAndPassword(auth, enteredEmail.toString(), enteredPass.toString())
-      .then((userCredential) => {
-        oldBookCtx.showToast("Login successful!");
-        history.replace("/tabs/home");
-      })
       .catch((error) => {
         setHandleLoginActivated(false);
         oldBookCtx.showToast("Incorrect email or password");
@@ -84,7 +86,13 @@ const Login: React.FC = () => {
             <a>OldBook</a>
           </IonCol>
           <IonCol className="ion-text-right btn-to">
-            <u><a href="/register">REGISTER</a></u>
+            <u>
+              <a 
+                onClick={() => {history.replace("/register");}}
+              >
+                REGISTER
+              </a>
+            </u>
           </IonCol>
         </IonRow>
 

@@ -10,7 +10,7 @@ import { OldBookContext } from '../data/OldBookContext';
 
 const Register: React.FC = () => {
   const oldBookCtx = useContext(OldBookContext);
-  const {currUser} = oldBookCtx;
+  const {currUserFirestore} = oldBookCtx;
   const history = useHistory();
   
   const auth = getAuth(firebaseApp);
@@ -20,11 +20,12 @@ const Register: React.FC = () => {
 
   // If already signed in, navigate to main page:
   useEffect(() => {    
-    if (currUser != null && !handleRegisterActivated) {
+    if (currUserFirestore !== null && currUserFirestore !== undefined
+    && !handleRegisterActivated) {
       oldBookCtx.showToast("Welcome back!");
       history.replace("/tabs/home");
     }
-  }, [currUser]);
+  }, [currUserFirestore]);
 
   const emailInputRef = useRef<HTMLIonInputElement>(null);
   const passInputRef = useRef<HTMLIonInputElement>(null);
@@ -128,6 +129,7 @@ const Register: React.FC = () => {
     }
 
     setHandleRegisterActivated(true);
+    oldBookCtx.setIsRegisteringNewUser(true);
     createUserWithEmailAndPassword(auth, enteredEmail.toString(), enteredPass.toString())
       .then((userCredential: UserCredential) => {
         const data = {
@@ -137,14 +139,20 @@ const Register: React.FC = () => {
           "phoneNumber": enteredPhoneNumber!.toString().trim(),
         };
         
+        // Manually setting currUserFirestore to avoid getDoc() and setDoc() race condition
+        // (race condition of setting current firestore data here and getting current
+        // firestore data in OldBookContext)
+        oldBookCtx.setCurrUserFirestore(data);
         setDoc(doc(db, "users", userCredential.user.uid), data)
           .then(() => {
+            oldBookCtx.setIsRegisteringNewUser(false);
             oldBookCtx.showToast("Registration successful!");
             history.replace("/tabs/home");
           })
           .catch((error: FirestoreError) => {
             deleteUser(userCredential.user);
 
+            oldBookCtx.setCurrUserFirestore(null);
             console.log("Error registering new account: " + error.message);
             oldBookCtx.showToast("Error registering new account: " + error.message);
           });
@@ -170,7 +178,13 @@ const Register: React.FC = () => {
             <a>OldBook</a>
           </IonCol>
           <IonCol className="ion-text-right btn-to">
-            <u><a href="/login">LOGIN</a></u>
+            <u>
+              <a 
+                onClick={() => {history.replace("/login");}}
+              >
+                LOGIN
+              </a>
+            </u>
           </IonCol>
         </IonRow>
 

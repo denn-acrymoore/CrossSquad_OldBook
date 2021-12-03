@@ -11,32 +11,74 @@ export interface UserFirebase {
     phoneNumber: string,
 }
 
+export interface Book {
+    bookId: string,
+    bookOwnerUid: string,
+    bookName: string,
+    bookDescription: string,
+    bookPrice: number,
+    bookStorageRef: string,
+    bookDownloadUrl: string,
+    bookShoppingCart: [],
+}
+
 export const OldBookContext = React.createContext
 <{
     showToast: (message: string) => void,
     currUser: User | null | undefined,
-    currUserFirestore: UserFirebase | null | undefined
+    currUserFirestore: UserFirebase | null | undefined,
+    isOnAuthStateChangedCalled: boolean,
+    setIsRegisteringNewUser: (state: boolean) => void,
+    setCurrUserFirestore: (user: UserFirebase | null) => void,
 }>
 ({
     showToast: (message: string) => {},
     currUser: null,
     currUserFirestore: null,
+    isOnAuthStateChangedCalled: false,
+    setIsRegisteringNewUser: (state: boolean) => {},
+    setCurrUserFirestore: (user: UserFirebase | null | undefined) => {},
 });
 
 const OldbookContextProvider: React.FC = props => {
     const [currUser, setCurrUser] = useState<User | null | undefined>();
     const [currUserFirestore, setCurrUserFirestore] = useState<UserFirebase | null | undefined>();
+    const [isOnAuthStateChangedCalled, setIsOnAuthStateChangedCalled] = useState<boolean>
+    (false);
+    const [isRegisteringNewUser, setIsRegisteringNewUser] = useState<boolean>(false);
 
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
 
-    onAuthStateChanged(auth, (user) => {
-        console.log("onAuthStateChanged is called!");
-        setCurrUser(user);
-    });
+    // NOTE:
+    // - When the user is not logged in, OnAuthStateChanged() returns null.
+    // - When the user is logged in, OnAuthStateChanged() returns current user.
+    // - Put onAuthStateChanged in useCallback so that it doesn't get instantiated 
+    //      every time a useState is changed.
+    
+    const authChangeListener = useCallback(() => {
+        onAuthStateChanged(auth, (user) => {
+            setIsOnAuthStateChangedCalled(true);
+            showToast("currUser is changed (onAuthStateChanged)!");
+            setCurrUser(user);
+        });
+    }, []);
 
     useEffect(() => {
-        if (currUser != null) {
+        authChangeListener();
+    }, [authChangeListener]);
+
+    // Don't run getDoc() when registering new user to prevent race condition 
+    // (When getDoc() runs at the same time as setDoc in register page).
+    useEffect(() => {
+        showToast("currUser is changed (useEffect)!");
+        if (currUser !== null && currUser !== undefined && isRegisteringNewUser === false 
+        && (currUserFirestore === null 
+            || currUserFirestore === undefined 
+            || currUserFirestore!.email !== currUser!.email)
+        ) {
+            showToast("Fetching user firestore data!");
+
             // Get user info in Firestore:
             getDoc(doc(db, "users", currUser!.uid))
             .then((docSnap: DocumentSnapshot) => {
@@ -71,7 +113,8 @@ const OldbookContextProvider: React.FC = props => {
     // in an <IonReactRoute>
 
     return (
-        <OldBookContext.Provider value={{showToast, currUser, currUserFirestore}}>
+        <OldBookContext.Provider value={{showToast, currUser, currUserFirestore
+        , isOnAuthStateChangedCalled, setIsRegisteringNewUser, setCurrUserFirestore}}>
             {props.children}
         </OldBookContext.Provider>
     );
