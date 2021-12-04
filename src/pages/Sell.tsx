@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { addSharp, book, pulseSharp, trashBinSharp, trashSharp } from "ionicons/icons";
 import './Theme.css';
 import firebaseApp from '../InitializeFirebase';
-import { collection, deleteDoc, doc, FirestoreError, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, FirestoreError, getDocs, getFirestore, query, where , onSnapshot } from 'firebase/firestore';
 import { deleteObject, getStorage, ref, StorageError } from "firebase/storage";
 import { Book, OldBookContext } from '../data/OldBookContext';
 import { ActionSheet } from '@capacitor/action-sheet';
@@ -20,34 +20,41 @@ const Sell: React.FC = () => {
   const storage = getStorage(firebaseApp);
 
   const [books, setBooks] = useState<Array<Book>>([]);
-  const [isGetBookDone, setIsGetBookDone] = useState<boolean>(false);
 
   const getBooksData = useCallback(() => {
-    getDocs(query(collection(db, "books"), where("bookOwnerUid", "==", currUser!.uid)))
-      .then((querySnapshot) => {
-        oldBookCtx.showToast("Fetching books data!");
-  
-        const bookList: Array<Book> = [];
-        
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const bookData: Book = {
-            bookId: data.bookId,
-            bookOwnerUid: data.bookOwnerUid,
-            bookName: data.bookName,
-            bookDescription: data.bookDescription,
-            bookPrice: data.bookPrice,
-            bookStorageRef: data.bookStorageRef,
-            bookDownloadUrl: data.bookDownloadUrl,
-            bookShoppingCart: data.bookShoppingCart,
-          };
-  
-          bookList.push(bookData);
-        });
-        
-        setBooks(bookList);
-        setIsGetBookDone(true);
+    // Listen to multiple documents in a collection:
+    const unsubscribe = onSnapshot(query(collection(db, "books"), where("bookOwnerUid", "==", currUser!.uid))
+    , { includeMetadataChanges: true }
+    , (querySnapshot) => {
+      // Check if data already is already sent to the server:
+      const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
+      if (source === "Local") {
+        return;
+      }
+
+      oldBookCtx.showToast("Fetching books data!");
+      const bookList: Array<Book> = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const bookData: Book = {
+          bookId: data.bookId,
+          bookOwnerUid: data.bookOwnerUid,
+          bookName: data.bookName,
+          bookDescription: data.bookDescription,
+          bookPrice: data.bookPrice,
+          bookStorageRef: data.bookStorageRef,
+          bookDownloadUrl: data.bookDownloadUrl,
+          bookShoppingCart: data.bookShoppingCart,
+        };
+
+        bookList.push(bookData);
       });
+
+      setBooks(bookList);
+    });
+
+    oldBookCtx.unregisterSellDataListener = unsubscribe;
   }, []);
 
   // Call getBooksData() once:
@@ -103,7 +110,7 @@ const Sell: React.FC = () => {
 
       <IonContent className="ion-padding-end">
         {/* There is no item here */}
-        {isGetBookDone && books.length === 0 && 
+        {books.length === 0 && 
           <IonCard className="card-empty ion-padding-top ion-text-center">
             <IonCardContent>
               <h2>You haven't sell any book.</h2>
@@ -117,7 +124,7 @@ const Sell: React.FC = () => {
         }
 
         {/* There's something to sell */}
-        {isGetBookDone && books.map((book, arrayIdx) => (
+        {books.map((book, arrayIdx) => (
           <IonCard className="card-sell">
             <IonItemSliding key={arrayIdx} ref={slidingOptionsRef}>
               <IonItem className="card-sell">

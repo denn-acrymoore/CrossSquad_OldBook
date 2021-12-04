@@ -2,7 +2,7 @@ import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, 
 import { getAuth, signOut } from 'firebase/auth';
 import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { OldBookContext } from '../data/OldBookContext';
+import OldbookContextProvider, { OldBookContext } from '../data/OldBookContext';
 import { ActionSheet } from "@capacitor/action-sheet";
 import './Theme.css';
 
@@ -30,6 +30,23 @@ const Profile: React.FC = () => {
       signOut(auth).then(() => {
         oldBookCtx.showToast("Log out successful!");
         oldBookCtx.setCurrUserFirestore(null);
+        
+        // Unsubscribing to listener and setting the functions to null:
+        if (oldBookCtx.unregisterSellDataListener) {
+          oldBookCtx.unregisterSellDataListener();
+          oldBookCtx.unregisterSellDataListener = null;
+        }
+
+        if (oldBookCtx.unregisterShoppingCartDataListener) {
+          oldBookCtx.unregisterShoppingCartDataListener();
+          oldBookCtx.unregisterShoppingCartDataListener = null;
+        }
+
+        if (oldBookCtx.unregisterHomeDataListener) {
+          oldBookCtx.unregisterHomeDataListener();
+          oldBookCtx.unregisterHomeDataListener = null;
+        }
+
         history.replace("/welcome");
       }).catch((error) => {
         oldBookCtx.showToast("Error logging out user: " + error.message);

@@ -30,6 +30,9 @@ export const OldBookContext = React.createContext
     isOnAuthStateChangedCalled: boolean,
     setIsRegisteringNewUser: (state: boolean) => void,
     setCurrUserFirestore: (user: UserFirebase | null) => void,
+    unregisterSellDataListener: (() => void) | null,
+    unregisterShoppingCartDataListener: (() => void) | null,
+    unregisterHomeDataListener: (() => void) | null,
 }>
 ({
     showToast: (message: string) => {},
@@ -38,6 +41,9 @@ export const OldBookContext = React.createContext
     isOnAuthStateChangedCalled: false,
     setIsRegisteringNewUser: (state: boolean) => {},
     setCurrUserFirestore: (user: UserFirebase | null | undefined) => {},
+    unregisterSellDataListener: () => {},
+    unregisterShoppingCartDataListener: () => {},
+    unregisterHomeDataListener: () => {},
 });
 
 const OldbookContextProvider: React.FC = props => {
@@ -46,6 +52,11 @@ const OldbookContextProvider: React.FC = props => {
     const [isOnAuthStateChangedCalled, setIsOnAuthStateChangedCalled] = useState<boolean>
     (false);
     const [isRegisteringNewUser, setIsRegisteringNewUser] = useState<boolean>(false);
+
+    // Functions to unsubscribe / detach firestore listener:
+    let unregisterSellDataListener = null;
+    let unregisterShoppingCartDataListener = null;
+    let unregisterHomeDataListener = null;
 
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
@@ -114,7 +125,8 @@ const OldbookContextProvider: React.FC = props => {
 
     return (
         <OldBookContext.Provider value={{showToast, currUser, currUserFirestore
-        , isOnAuthStateChangedCalled, setIsRegisteringNewUser, setCurrUserFirestore}}>
+        , isOnAuthStateChangedCalled, setIsRegisteringNewUser, setCurrUserFirestore
+        , unregisterSellDataListener, unregisterShoppingCartDataListener, unregisterHomeDataListener}}>
             {props.children}
         </OldBookContext.Provider>
     );
