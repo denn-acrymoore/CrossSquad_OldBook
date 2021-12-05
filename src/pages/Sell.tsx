@@ -26,13 +26,13 @@ const Sell: React.FC = () => {
     const unsubscribe = onSnapshot(query(collection(db, "books"), where("bookOwnerUid", "==", currUser!.uid))
     , { includeMetadataChanges: true }
     , (querySnapshot) => {
-      // Check if data already is already sent to the server:
+      // Check if data is already sent to the server:
       const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
       if (source === "Local") {
         return;
       }
 
-      oldBookCtx.showToast("Fetching books data!");
+      oldBookCtx.showToast("Fetching books data for sell page!");
       const bookList: Array<Book> = [];
 
       querySnapshot.forEach((doc) => {

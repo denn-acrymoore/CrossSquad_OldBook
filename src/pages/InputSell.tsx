@@ -54,7 +54,7 @@ const InputSell: React.FC = () => {
     
     // Check if blob size is more than 1 MB:
     if (blob.size > 1024 * 1024) {
-      oldBookCtx.showToast("Max photo size = 1 MB!");
+      oldBookCtx.showToast("Photo size is too big!");
       return;
     }
 
@@ -121,7 +121,7 @@ const InputSell: React.FC = () => {
 
     // Make sure that takenPhotoBlob size is at most 1 MB:
     if (takenPhotoBlob.size > 1024 * 1024) {
-      oldBookCtx.showToast("Max photo size = 1 MB!");
+      oldBookCtx.showToast("Photo size is too big!");
       return;
     }
 

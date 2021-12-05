@@ -33,6 +33,10 @@ export const OldBookContext = React.createContext
     unregisterSellDataListener: (() => void) | null,
     unregisterShoppingCartDataListener: (() => void) | null,
     unregisterHomeDataListener: (() => void) | null,
+    selectedBookForShoppingCart: Book | null,
+    setSelectedBookForShoppingCart: (book: Book | null) => void,
+    currShoppingCart: Book[] | null,
+    setCurrShoppingCart: (shoppingCartBooks: Book[]) => void,
 }>
 ({
     showToast: (message: string) => {},
@@ -44,6 +48,10 @@ export const OldBookContext = React.createContext
     unregisterSellDataListener: () => {},
     unregisterShoppingCartDataListener: () => {},
     unregisterHomeDataListener: () => {},
+    selectedBookForShoppingCart: null,
+    setSelectedBookForShoppingCart: (book: Book | null) => {},
+    currShoppingCart: null,
+    setCurrShoppingCart: (shoppingCartBooks: Book[]) => {},
 });
 
 const OldbookContextProvider: React.FC = props => {
@@ -52,6 +60,8 @@ const OldbookContextProvider: React.FC = props => {
     const [isOnAuthStateChangedCalled, setIsOnAuthStateChangedCalled] = useState<boolean>
     (false);
     const [isRegisteringNewUser, setIsRegisteringNewUser] = useState<boolean>(false);
+    const [selectedBookForShoppingCart, setSelectedBookForShoppingCart] = useState<Book | null>(null);
+    const [currShoppingCart, setCurrShoppingCart] = useState<Array<Book> | null>(null);
 
     // Functions to unsubscribe / detach firestore listener:
     let unregisterSellDataListener = null;
@@ -124,9 +134,21 @@ const OldbookContextProvider: React.FC = props => {
     // in an <IonReactRoute>
 
     return (
-        <OldBookContext.Provider value={{showToast, currUser, currUserFirestore
-        , isOnAuthStateChangedCalled, setIsRegisteringNewUser, setCurrUserFirestore
-        , unregisterSellDataListener, unregisterShoppingCartDataListener, unregisterHomeDataListener}}>
+        <OldBookContext.Provider 
+            value={{
+                showToast, 
+                currUser, 
+                currUserFirestore, 
+                isOnAuthStateChangedCalled, 
+                setIsRegisteringNewUser, 
+                setCurrUserFirestore, 
+                unregisterSellDataListener, 
+                unregisterShoppingCartDataListener, 
+                unregisterHomeDataListener, 
+                selectedBookForShoppingCart, 
+                setSelectedBookForShoppingCart,
+                currShoppingCart,
+                setCurrShoppingCart}}>
             {props.children}
         </OldBookContext.Provider>
     );
