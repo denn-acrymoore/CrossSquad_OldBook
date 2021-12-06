@@ -60,7 +60,7 @@ export const OldBookContext = React.createContext
     setCurrShoppingCart: (shoppingCartBooks: Book[]) => {},
 });
 
-const OldbookContextProvider: React.FC = props => {
+const OldBookContextProvider: React.FC = props => {
     const [currUser, setCurrUser] = useState<User | null | undefined>();
     const [currUserFirestore, setCurrUserFirestore] = useState<UserFirebase | null | undefined>();
     const [isOnAuthStateChangedCalled, setIsOnAuthStateChangedCalled] = useState<boolean>
@@ -163,4 +163,4 @@ const OldbookContextProvider: React.FC = props => {
     );
 };
 
-export default OldbookContextProvider;
+export default OldBookContextProvider;
