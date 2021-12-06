@@ -1,17 +1,20 @@
 import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { getAuth, signOut } from 'firebase/auth';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import OldbookContextProvider, { OldBookContext } from '../data/OldBookContext';
+import { OldBookContext, UserFirebase } from '../data/OldBookContext';
 import { ActionSheet } from "@capacitor/action-sheet";
 import './Theme.css';
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
+import firebaseApp from '../InitializeFirebase';
 
 const Profile: React.FC = () => {
   const oldBookCtx = useContext(OldBookContext);
+  const {currUser} = oldBookCtx;
   const {currUserFirestore} = oldBookCtx;
   const history = useHistory();
 
-  const auth = getAuth();
+  const auth = getAuth(firebaseApp);
 
   const handleLogout = async () => {
     const result = await ActionSheet.showActions({
@@ -29,23 +32,16 @@ const Profile: React.FC = () => {
     if (result.index === 0) {
       signOut(auth).then(() => {
         oldBookCtx.showToast("Log out successful!");
-        oldBookCtx.setCurrUserFirestore(null);
-        
         // Unsubscribing to listener and setting the functions to null:
-        if (oldBookCtx.unregisterSellDataListener) {
-          oldBookCtx.unregisterSellDataListener();
-          oldBookCtx.unregisterSellDataListener = null;
-        }
+        oldBookCtx.unregisterSellDataListener();
+        oldBookCtx.unregisterShoppingCartDataListener();
+        oldBookCtx.unregisterHomeDataListener();
 
-        if (oldBookCtx.unregisterShoppingCartDataListener) {
-          oldBookCtx.unregisterShoppingCartDataListener();
-          oldBookCtx.unregisterShoppingCartDataListener = null;
-        }
-
-        if (oldBookCtx.unregisterHomeDataListener) {
-          oldBookCtx.unregisterHomeDataListener();
-          oldBookCtx.unregisterHomeDataListener = null;
-        }
+        oldBookCtx.setUnregisterSellDataListener(() => () => {});
+        oldBookCtx.setUnregisterShoppingCartDataListener(() => () => {});
+        oldBookCtx.setUnregisterHomeDataListener(() => () => {});
+        
+        oldBookCtx.setCurrUserFirestore(null);
 
         history.replace("/welcome");
       }).catch((error) => {

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Toast } from "@capacitor/toast";
 import firebaseApp from "../InitializeFirebase";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { getAuth, onAuthStateChanged, Unsubscribe, User } from "firebase/auth";
 import { doc, DocumentSnapshot, getDoc, getFirestore } from "firebase/firestore";
 
 export interface UserFirebase {
@@ -30,9 +30,12 @@ export const OldBookContext = React.createContext
     isOnAuthStateChangedCalled: boolean,
     setIsRegisteringNewUser: (state: boolean) => void,
     setCurrUserFirestore: (user: UserFirebase | null) => void,
-    unregisterSellDataListener: (() => void) | null,
-    unregisterShoppingCartDataListener: (() => void) | null,
-    unregisterHomeDataListener: (() => void) | null,
+    unregisterSellDataListener: Unsubscribe,
+    setUnregisterSellDataListener: (unsubscribe: Unsubscribe) => void,
+    unregisterShoppingCartDataListener: Unsubscribe,
+    setUnregisterShoppingCartDataListener: (unsubscribe: Unsubscribe) => void,
+    unregisterHomeDataListener: Unsubscribe,
+    setUnregisterHomeDataListener: (unsubscribe: Unsubscribe) => void,
     selectedBookForShoppingCart: Book | null,
     setSelectedBookForShoppingCart: (book: Book | null) => void,
     currShoppingCart: Array<Book> | null,
@@ -45,9 +48,12 @@ export const OldBookContext = React.createContext
     isOnAuthStateChangedCalled: false,
     setIsRegisteringNewUser: (state: boolean) => {},
     setCurrUserFirestore: (user: UserFirebase | null | undefined) => {},
-    unregisterSellDataListener: () => {},
-    unregisterShoppingCartDataListener: () => {},
-    unregisterHomeDataListener: () => {},
+    unregisterSellDataListener: () => () => {},
+    setUnregisterSellDataListener: (unsubscribe: Unsubscribe) => {},
+    unregisterShoppingCartDataListener: () => () => {},
+    setUnregisterShoppingCartDataListener: (unsubscribe: Unsubscribe) => {},
+    unregisterHomeDataListener: () => () => {},
+    setUnregisterHomeDataListener: (unsubscribe: Unsubscribe) => {},
     selectedBookForShoppingCart: null,
     setSelectedBookForShoppingCart: (book: Book | null) => {},
     currShoppingCart: null,
@@ -64,10 +70,10 @@ const OldbookContextProvider: React.FC = props => {
     const [currShoppingCart, setCurrShoppingCart] = useState<Array<Book>>([]);
 
     // Functions to unsubscribe / detach firestore listener:
-    let unregisterSellDataListener = null;
-    let unregisterShoppingCartDataListener = null;
-    let unregisterHomeDataListener = null;
-
+    const [unregisterSellDataListener, setUnregisterSellDataListener] = useState<Unsubscribe>(() => () => {});
+    const [unregisterShoppingCartDataListener, setUnregisterShoppingCartDataListener] = useState<Unsubscribe>(() => () => {});
+    const [unregisterHomeDataListener, setUnregisterHomeDataListener] = useState<Unsubscribe>(() => () => {});
+    
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
 
@@ -143,8 +149,11 @@ const OldbookContextProvider: React.FC = props => {
                 setIsRegisteringNewUser, 
                 setCurrUserFirestore, 
                 unregisterSellDataListener, 
-                unregisterShoppingCartDataListener, 
+                setUnregisterSellDataListener,
+                unregisterShoppingCartDataListener,
+                setUnregisterShoppingCartDataListener,
                 unregisterHomeDataListener, 
+                setUnregisterHomeDataListener,
                 selectedBookForShoppingCart, 
                 setSelectedBookForShoppingCart,
                 currShoppingCart,

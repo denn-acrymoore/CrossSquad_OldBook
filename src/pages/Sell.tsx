@@ -22,41 +22,49 @@ const Sell: React.FC = () => {
   const [books, setBooks] = useState<Array<Book>>([]);
   const [isLoadingOpen, setIsLoadingOpen] = useState<boolean>(false);
 
-  const getBooksData = useCallback(() => {
-    // Listen to multiple documents in a collection:
-    const unsubscribe = onSnapshot(query(collection(db, "books"), where("bookOwnerUid", "==", currUser!.uid))
-    , { includeMetadataChanges: true }
-    , (querySnapshot) => {
-      // Check if data is already sent to the server:
-      const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
-      if (source === "Local") {
-        return;
-      }
+  const getBooksData = useCallback(async () => {
+    // oldBookCtx.showToast("Sell Page listener callback is called!");
+    if (currUser !== null) {
+      // oldBookCtx.showToast("Initializing Sell Page listener!");
 
-      // oldBookCtx.showToast("Fetching books data for sell page!");
-      const bookList: Array<Book> = [];
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const bookData: Book = {
-          bookId: data.bookId,
-          bookOwnerUid: data.bookOwnerUid,
-          bookName: data.bookName,
-          bookDescription: data.bookDescription,
-          bookPrice: data.bookPrice,
-          bookStorageRef: data.bookStorageRef,
-          bookDownloadUrl: data.bookDownloadUrl,
-          bookShoppingCart: data.bookShoppingCart,
-        };
-
-        bookList.push(bookData);
+      // Listen to multiple documents in a collection:
+      const unsubscribe = await onSnapshot(query(collection(db, "books"), where("bookOwnerUid", "==", currUser!.uid))
+      , { includeMetadataChanges: true }
+      , (querySnapshot) => {
+        // Check if data is already sent to the server:
+        const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
+        if (source === "Local") {
+          return;
+        }
+  
+        // oldBookCtx.showToast("Fetching books data for Sell Page!");
+        const bookList: Array<Book> = [];
+  
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const bookData: Book = {
+            bookId: data.bookId,
+            bookOwnerUid: data.bookOwnerUid,
+            bookName: data.bookName,
+            bookDescription: data.bookDescription,
+            bookPrice: data.bookPrice,
+            bookStorageRef: data.bookStorageRef,
+            bookDownloadUrl: data.bookDownloadUrl,
+            bookShoppingCart: data.bookShoppingCart,
+          };
+  
+          bookList.push(bookData);
+        });
+  
+        setBooks(bookList);
       });
-
-      setBooks(bookList);
-    });
-
-    oldBookCtx.unregisterSellDataListener = unsubscribe;
-  }, []);
+  
+      oldBookCtx.setUnregisterSellDataListener(() => () => {
+        unsubscribe();
+        // oldBookCtx.showToast("Unsubscribed Sell Data Listener!");
+      });
+    }
+  }, [currUser]);
 
   // Call getBooksData() once:
   useEffect(() => {

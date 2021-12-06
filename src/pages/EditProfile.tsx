@@ -3,7 +3,7 @@ import firebaseApp from '../InitializeFirebase';
 import { doc, FirestoreError, getFirestore, updateDoc } from 'firebase/firestore';
 import { useContext, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
-import { OldBookContext } from '../data/OldBookContext';
+import { OldBookContext, UserFirebase } from '../data/OldBookContext';
 import './Theme.css';
 
 const EditProfile: React.FC = () => {
@@ -62,6 +62,14 @@ const EditProfile: React.FC = () => {
       "phoneNumber": enteredPhoneNumber.toString().trim(),
     })
     .then(() => {
+      const updatedData: UserFirebase = {
+        "email": currUserFirestore!.email,
+        "name": enteredName!.toString().trim(),
+        "address": enteredAddress!.toString().trim(),
+        "phoneNumber": enteredPhoneNumber!.toString().trim(),
+      }
+
+      oldBookCtx.setCurrUserFirestore(updatedData);
       setIsLoadingOpen(false);
       oldBookCtx.showToast("User data update successful!");
       history.length > 0 ? history.goBack() : history.replace("/tabs/profile");

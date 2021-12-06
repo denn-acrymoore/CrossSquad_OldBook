@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Book, OldBookContext } from '../data/OldBookContext';
 import firebaseApp from '../InitializeFirebase';
-import { collection, getFirestore, onSnapshot, query, QuerySnapshot, where } from 'firebase/firestore';
+import { collection, getFirestore, onSnapshot, orderBy, query, QuerySnapshot, where } from 'firebase/firestore';
 import './Theme.css';
 
 const Home: React.FC = () => {
@@ -21,58 +21,66 @@ const Home: React.FC = () => {
 
   const db = getFirestore(firebaseApp);
 
-  const getBooksData = useCallback(() => {
-    const unsubscribe = onSnapshot(query(collection(db, "books"), where("bookOwnerUid", "!=", currUser!.uid))
-      , { includeMetadataChanges: true }
-      , (querySnapshot) => {
-        // Check if data is already sent to the server:
-        const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
-        if (source === "Local") {
-          return;
-        }
+  const getBooksData = useCallback(async () => {
+    // oldBookCtx.showToast("Home Page listener callback is called!");
+    if (currUser !== null) {
+      // oldBookCtx.showToast("Initializing Home Page listener!");
 
-        // oldBookCtx.showToast("Fetching books data for home!");
-        const bookList: Array<Book> = [];
-        const bookListFirstThree: Array<Book> = [];
-        const bookListAfterFirstThree: Array<Book> = [];
-        let bookNum = 0;
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const bookData: Book = {
-            bookId: data.bookId,
-            bookOwnerUid: data.bookOwnerUid,
-            bookName: data.bookName,
-            bookDescription: data.bookDescription,
-            bookPrice: data.bookPrice,
-            bookStorageRef: data.bookStorageRef,
-            bookDownloadUrl: data.bookDownloadUrl,
-            bookShoppingCart: data.bookShoppingCart,
-          };
-
-          if (bookData.bookShoppingCart.find(element => element === currUser!.uid)) {
+      const unsubscribe = await onSnapshot(query(collection(db, "books"), where("bookOwnerUid", "!=", currUser!.uid))
+        , { includeMetadataChanges: true }
+        , (querySnapshot) => {
+          // Check if data is already sent to the server:
+          const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
+          if (source === "Local") {
             return;
           }
-          else {
-            ++bookNum;
-            bookList.push(bookData);
-
-            if (bookNum <= 3) {
-              bookListFirstThree.push(bookData);
+  
+          // oldBookCtx.showToast("Fetching books data for Home Page!");
+          const bookList: Array<Book> = [];
+          const bookListFirstThree: Array<Book> = [];
+          const bookListAfterFirstThree: Array<Book> = [];
+          let bookNum = 0;
+  
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const bookData: Book = {
+              bookId: data.bookId,
+              bookOwnerUid: data.bookOwnerUid,
+              bookName: data.bookName,
+              bookDescription: data.bookDescription,
+              bookPrice: data.bookPrice,
+              bookStorageRef: data.bookStorageRef,
+              bookDownloadUrl: data.bookDownloadUrl,
+              bookShoppingCart: data.bookShoppingCart,
+            };
+  
+            if (bookData.bookShoppingCart.find(element => element === currUser!.uid)) {
+              return;
             }
-            else if (bookNum > 3) {
-              bookListAfterFirstThree.push(bookData);
+            else {
+              ++bookNum;
+              bookList.push(bookData);
+  
+              if (bookNum <= 3) {
+                bookListFirstThree.push(bookData);
+              }
+              else if (bookNum > 3) {
+                bookListAfterFirstThree.push(bookData);
+              }
             }
-          }
+          });
+  
+          setBooks(bookList);
+          setBooksFirstThree(bookListFirstThree);
+          setBooksAfterFirstThree(bookListAfterFirstThree);
         });
-
-        setBooks(bookList);
-        setBooksFirstThree(bookListFirstThree);
-        setBooksAfterFirstThree(bookListAfterFirstThree);
+  
+      oldBookCtx.setUnregisterHomeDataListener(() => () => {
+        unsubscribe();
+        // oldBookCtx.showToast("Unsubscribed Home Data Listener!");
       });
-
-    oldBookCtx.unregisterHomeDataListener = unsubscribe;
-  }, []);
+    }
+  }, [currUser]);
 
   // Call getBooksData() once:
   useEffect(() => {

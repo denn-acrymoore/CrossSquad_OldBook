@@ -19,40 +19,49 @@ const Cart: React.FC = () => {
 
   const [isLoadingOpen, setIsLoadingOpen] = useState<boolean>(false);
 
-  const getShoppingCartData = useCallback(() => {
-    // Listen to multiple documents in a collection:
-    const q = query(collection(db, "books"), where("bookShoppingCart", "array-contains", currUser!.uid));
-    const unsubscribe = onSnapshot(q, { includeMetadataChanges: true }
-    , (querySnapshot) => {
-      // Check if data is already sent to the server:
-      const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
-      if (source === "Local") {
-        return;
-      }
+  const getShoppingCartData = useCallback(async () => {
+    // oldBookCtx.showToast("Shopping Cart Page listener callback is called!");
+    if (currUser !== null) {
+      // oldBookCtx.showToast("Initializing Shopping Cart Page listener!");
 
-      const bookList: Array<Book> = [];
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const bookData: Book = {
-          bookId: data.bookId,
-          bookOwnerUid: data.bookOwnerUid,
-          bookName: data.bookName,
-          bookDescription: data.bookDescription,
-          bookPrice: data.bookPrice,
-          bookStorageRef: data.bookStorageRef,
-          bookDownloadUrl: data.bookDownloadUrl,
-          bookShoppingCart: data.bookShoppingCart,
-        };
-
-        bookList.push(bookData);
+      // Listen to multiple documents in a collection:
+      const q = query(collection(db, "books"), where("bookShoppingCart", "array-contains", currUser!.uid));
+      const unsubscribe = await onSnapshot(q, { includeMetadataChanges: true }
+      , (querySnapshot) => {
+        // Check if data is already sent to the server:
+        const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
+        if (source === "Local") {
+          return;
+        }
+  
+        // oldBookCtx.showToast("Fetching books data for Shopping Cart Page!");
+        const bookList: Array<Book> = [];
+  
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const bookData: Book = {
+            bookId: data.bookId,
+            bookOwnerUid: data.bookOwnerUid,
+            bookName: data.bookName,
+            bookDescription: data.bookDescription,
+            bookPrice: data.bookPrice,
+            bookStorageRef: data.bookStorageRef,
+            bookDownloadUrl: data.bookDownloadUrl,
+            bookShoppingCart: data.bookShoppingCart,
+          };
+  
+          bookList.push(bookData);
+        });
+  
+        oldBookCtx.setCurrShoppingCart(bookList);
       });
-
-      oldBookCtx.setCurrShoppingCart(bookList);
-    });
-
-    oldBookCtx.unregisterShoppingCartDataListener = unsubscribe;
-  }, []); 
+  
+      oldBookCtx.setUnregisterShoppingCartDataListener(() => () => {
+        unsubscribe();
+        // oldBookCtx.showToast("Unsubscribed Shopping Cart Data Listener!");
+      });
+    }
+  }, [currUser]); 
 
   useEffect(() => {
     getShoppingCartData();
