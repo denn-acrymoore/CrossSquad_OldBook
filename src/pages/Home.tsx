@@ -31,7 +31,7 @@ const Home: React.FC = () => {
           return;
         }
 
-        oldBookCtx.showToast("Fetching books data for home!");
+        // oldBookCtx.showToast("Fetching books data for home!");
         const bookList: Array<Book> = [];
         const bookListFirstThree: Array<Book> = [];
         const bookListAfterFirstThree: Array<Book> = [];

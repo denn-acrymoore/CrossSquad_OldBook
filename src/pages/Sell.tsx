@@ -1,4 +1,4 @@
-import { IonList, IonItemSliding, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonPage, IonRow, IonTitle, IonToolbar, IonItem, IonItemOptions, IonItemOption, IonIcon, IonLabel, IonFab, IonFabButton } from '@ionic/react';
+import { IonList, IonItemSliding, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonPage, IonRow, IonTitle, IonToolbar, IonItem, IonItemOptions, IonItemOption, IonIcon, IonLabel, IonFab, IonFabButton, IonLoading } from '@ionic/react';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { addSharp, book, pulseSharp, trashBinSharp, trashSharp } from "ionicons/icons";
 import './Theme.css';
@@ -20,6 +20,7 @@ const Sell: React.FC = () => {
   const storage = getStorage(firebaseApp);
 
   const [books, setBooks] = useState<Array<Book>>([]);
+  const [isLoadingOpen, setIsLoadingOpen] = useState<boolean>(false);
 
   const getBooksData = useCallback(() => {
     // Listen to multiple documents in a collection:
@@ -32,7 +33,7 @@ const Sell: React.FC = () => {
         return;
       }
 
-      oldBookCtx.showToast("Fetching books data for sell page!");
+      // oldBookCtx.showToast("Fetching books data for sell page!");
       const bookList: Array<Book> = [];
 
       querySnapshot.forEach((doc) => {
@@ -78,6 +79,7 @@ const Sell: React.FC = () => {
     });
 
     if (result.index === 0) {
+      setIsLoadingOpen(true);
       const deleteImgRef = ref(storage, books[arrayIdx].bookStorageRef);
       const selectedBookId = books[arrayIdx].bookId;
       
@@ -86,15 +88,15 @@ const Sell: React.FC = () => {
         // Delete book data from Firebase Firestore:
         deleteDoc(doc(db, "books", selectedBookId))
           .then(() => {
-            // Update books useState:
-            const updatedBooks = books.filter(book => book.bookId != selectedBookId);
-            setBooks(updatedBooks);
+            setIsLoadingOpen(false);
             oldBookCtx.showToast("Book delete successful!");
           })
           .catch((error: FirestoreError) => {
+            setIsLoadingOpen(false);
             oldBookCtx.showToast("Error deleting book: " + error.message);
           })
       }).catch((error: StorageError) => {
+        setIsLoadingOpen(false);
         oldBookCtx.showToast("Error deleting book: " + error.message);
       });
     }
@@ -109,6 +111,15 @@ const Sell: React.FC = () => {
       </IonHeader>
 
       <IonContent className="ion-padding-end">
+        <IonLoading 
+          isOpen={isLoadingOpen}
+          spinner="crescent"
+          keyboardClose={true}
+          backdropDismiss={false}
+          duration={0}
+          showBackdrop={true}
+        />
+
         {/* There is no item here */}
         {books.length === 0 && 
           <IonCard className="card-empty ion-padding-top ion-text-center">

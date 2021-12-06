@@ -1,14 +1,97 @@
-import { IonList, IonItemSliding, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonPage, IonRow, IonTitle, IonToolbar, IonItem, IonItemOptions, IonItemOption, IonIcon, IonLabel } from '@ionic/react';
-import { useRef } from 'react';
+import { IonList, IonItemSliding, IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonPage, IonRow, IonTitle, IonToolbar, IonItem, IonItemOptions, IonItemOption, IonIcon, IonLabel, IonLoading } from '@ionic/react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { trashBinSharp, trashSharp } from "ionicons/icons";
 import './Theme.css';
+import firebaseApp from '../InitializeFirebase';
+import { collection, doc, FirestoreError, getDoc, getFirestore, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
+import { Book, OldBookContext } from '../data/OldBookContext';
+import { useHistory } from 'react-router';
+import { ActionSheet } from '@capacitor/action-sheet';
 
 const Cart: React.FC = () => {
   const slidingOptionsRef = useRef<HTMLIonItemSlidingElement>(null);
 
-  const deleteItem = () => {
+  const oldBookCtx = useContext(OldBookContext);
+  const {currUser} = oldBookCtx;
+  const history = useHistory();
+
+  const db = getFirestore(firebaseApp);
+
+  const [isLoadingOpen, setIsLoadingOpen] = useState<boolean>(false);
+
+  const getShoppingCartData = useCallback(() => {
+    // Listen to multiple documents in a collection:
+    const q = query(collection(db, "books"), where("bookShoppingCart", "array-contains", currUser!.uid));
+    const unsubscribe = onSnapshot(q, { includeMetadataChanges: true }
+    , (querySnapshot) => {
+      // Check if data is already sent to the server:
+      const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
+      if (source === "Local") {
+        return;
+      }
+
+      const bookList: Array<Book> = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const bookData: Book = {
+          bookId: data.bookId,
+          bookOwnerUid: data.bookOwnerUid,
+          bookName: data.bookName,
+          bookDescription: data.bookDescription,
+          bookPrice: data.bookPrice,
+          bookStorageRef: data.bookStorageRef,
+          bookDownloadUrl: data.bookDownloadUrl,
+          bookShoppingCart: data.bookShoppingCart,
+        };
+
+        bookList.push(bookData);
+      });
+
+      oldBookCtx.setCurrShoppingCart(bookList);
+    });
+
+    oldBookCtx.unregisterShoppingCartDataListener = unsubscribe;
+  }, []); 
+
+  useEffect(() => {
+    getShoppingCartData();
+  }, [getShoppingCartData])
+
+  const deleteItem = async (arrayIdx: number) => {
     slidingOptionsRef.current?.closeOpened();
-    console.log("Delete...");
+    
+    const result = await ActionSheet.showActions({
+      title: "Are you sure you want to remove this book from shopping cart?: " + oldBookCtx.currShoppingCart![arrayIdx].bookName,
+      options: [
+        {
+          title: "Yes"
+        },
+        {
+          title: "No"
+        }
+      ],
+    });
+
+    if (result.index === 0) {
+      setIsLoadingOpen(true);
+      const selectedBook: Book = oldBookCtx.currShoppingCart![arrayIdx];
+      const updatedBookShoppingCart = selectedBook.bookShoppingCart.filter(book => book !== currUser!.uid);
+
+      const docRef = doc(db, "books", selectedBook.bookId);
+
+      updateDoc(docRef, {
+        "bookShoppingCart": updatedBookShoppingCart,
+      })
+      .then(() => {
+        setIsLoadingOpen(false);
+        oldBookCtx.showToast("Book removed from shopping cart!");
+      })
+      .catch((error: FirestoreError) => {
+        setIsLoadingOpen(false);
+        oldBookCtx.showToast("Error removing book from shopping cart: " + error.message);
+      });
+    }
   }
 
   return (
@@ -20,50 +103,72 @@ const Cart: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen className="ion-padding-end">
+        <IonLoading 
+          isOpen={isLoadingOpen}
+          spinner="crescent"
+          keyboardClose={true}
+          backdropDismiss={false}
+          duration={0}
+          showBackdrop={true}
+        />
+
         {/* There is no item here */}
-        {/* <IonCard className="card-empty ion-padding-top ion-text-center">
-          <IonCardContent>
-            <h2>You haven't add any book.</h2>
-            <IonButton href="/tabs/home">
-              Find Your Book
-            </IonButton>
-          </IonCardContent>
-        </IonCard> */}
+        {oldBookCtx.currShoppingCart!.length === 0 && 
+          <IonCard className="card-empty ion-padding-top ion-text-center">
+            <IonCardContent>
+              <h2>You haven't add any book.</h2>
+              <IonButton 
+                onClick={() => {history.push("/tabs/home");}}
+              >
+                Find Your Book
+              </IonButton>
+            </IonCardContent>
+          </IonCard>
+        }
 
         {/* There's something to buy */}
-        <IonCard className="card-cart">
-          <IonItemSliding>
-            <IonItem className="card-cart">
-              <IonCardContent>
-                <IonGrid>
-                  <IonRow>
-                    <IonCol size="5">
-                      <IonImg className="image-sec3" src="assets/Buku7.jpg" />
-                    </IonCol>
-                    <IonCol size="7">
-                      <h2>Miss Irresistible Stylist</h2>
-                      <h5>Fashion stylist yang berharap gambar-gambar pakaian di buku sketsanya bisa mewujud nyata.</h5>
-                      <h6 className="ion-text-end">Rp 40.000</h6>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              </IonCardContent>
-            </IonItem>
+        {oldBookCtx.currShoppingCart!.map((book, arrayIdx) => (
+          <IonCard className="card-cart">
+            <IonItemSliding key={arrayIdx} ref={slidingOptionsRef}>
+              <IonItem className="card-cart">
+                <IonCardContent>
+                  <IonGrid>
+                    <IonRow>
+                      <IonCol size="5">
+                        <IonImg 
+                          className="image-sec3" 
+                          src={book.bookDownloadUrl} 
+                        />
+                      </IonCol>
+                      <IonCol size="7">
+                        <h2>{book.bookName}</h2>
+                        <h5>{book.bookDescription}</h5>
+                        <h6 className="ion-text-end">{"Rp " + Intl.NumberFormat('de-DE').format(book.bookPrice)}</h6>
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </IonCardContent>
+              </IonItem>
 
-            {/* Slide Item */}
-            <IonItemOptions side="end">
-              <IonItemOption color="danger" onClick={deleteItem}>
-                &#160;&#160;<IonIcon icon={trashSharp} />&#160;&#160;
-              </IonItemOption>
-            </IonItemOptions>
-          </IonItemSliding>
-        </IonCard>
+              {/* Slide Item */}
+              <IonItemOptions side="end">
+                <IonItemOption color="danger" onClick={deleteItem.bind(null, arrayIdx)}>
+                  &#160;&#160;<IonIcon icon={trashSharp} />&#160;&#160;
+                </IonItemOption>
+              </IonItemOptions>
+            </IonItemSliding>
+          </IonCard>
+        ))}
 
-        <div className="checkout-button ion-text-center ion-padding-start">
-          <IonButton href="/tabs/checkout">
-            CHECKOUT
-          </IonButton>
-        </div>
+        {oldBookCtx.currShoppingCart!.length > 0 && 
+          <div className="checkout-button ion-text-center ion-padding-start">
+            <IonButton 
+              onClick={() => {history.push("/tabs/checkout")}}
+            >
+              CHECKOUT
+            </IonButton>
+          </div>
+        }
       </IonContent>
     </IonPage >
   );

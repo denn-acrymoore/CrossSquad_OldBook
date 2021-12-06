@@ -1,7 +1,7 @@
-import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import firebaseApp from '../InitializeFirebase';
 import { doc, FirestoreError, getFirestore, updateDoc } from 'firebase/firestore';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { OldBookContext } from '../data/OldBookContext';
 import './Theme.css';
@@ -17,6 +17,8 @@ const EditProfile: React.FC = () => {
   const nameInputRef = useRef<HTMLIonInputElement>(null);
   const addressInputRef = useRef<HTMLIonInputElement>(null);
   const phoneNumberInputRef = useRef<HTMLIonInputElement>(null);
+
+  const [isLoadingOpen, setIsLoadingOpen] = useState<boolean>(false);
 
   const spaceRegex = /\s/;
   const numberRegex = /^\d{12}$/
@@ -53,16 +55,19 @@ const EditProfile: React.FC = () => {
       return;
     }
 
+    setIsLoadingOpen(true);
     updateDoc(doc(db, "users", currUser!.uid), {
       "name": enteredName.toString().trim(),
       "address": enteredAddress.toString().trim(),
       "phoneNumber": enteredPhoneNumber.toString().trim(),
     })
     .then(() => {
+      setIsLoadingOpen(false);
       oldBookCtx.showToast("User data update successful!");
       history.length > 0 ? history.goBack() : history.replace("/tabs/profile");
     })
     .catch((error: FirestoreError) => {
+      setIsLoadingOpen(false);
       oldBookCtx.showToast("Error updating user data: " + error.message);
     });
   }
@@ -80,6 +85,15 @@ const EditProfile: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen className="ion-padding-start ion-padding-end ion-padding-top">
+        <IonLoading 
+          isOpen={isLoadingOpen}
+          spinner="crescent"
+          keyboardClose={true}
+          backdropDismiss={false}
+          duration={0}
+          showBackdrop={true}
+        />
+
         <IonItem lines="none" className="info-profile">
           <IonLabel>NAME : </IonLabel>
           <IonInput 

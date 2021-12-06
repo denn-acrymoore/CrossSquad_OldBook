@@ -1,7 +1,57 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonLabel, IonList, IonLoading, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { OldBookContext } from '../data/OldBookContext';
+import firebaseApp from '../InitializeFirebase';
+import { deleteDoc, doc, FirestoreError, getFirestore } from 'firebase/firestore';
 import './Theme.css';
+import { deleteObject, getStorage, ref, StorageError } from 'firebase/storage';
 
 const Checkout: React.FC = () => {
+  const oldBookCtx = useContext(OldBookContext);
+  const {currUserFirestore} = oldBookCtx;
+  const history = useHistory();
+
+  const db = getFirestore(firebaseApp);
+  const storage = getStorage(firebaseApp);
+
+  const [isLoadingOpen, setIsLoadingOpen] = useState<boolean>(false);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  useEffect(() => {
+    let currPrice = 7000;
+    oldBookCtx.currShoppingCart!.forEach((book) => {
+      currPrice = currPrice + book.bookPrice;
+    });
+
+    setTotalPrice(currPrice);
+  }, [oldBookCtx.currShoppingCart])
+
+  const handleCheckout = async () => {
+    setIsLoadingOpen(true);
+
+    // Clone the current shopping cart to prevent conflict if oldBookCtx.currShoppingCart
+    // is changed by Firestore listener:
+    const booksInShoppingCart = oldBookCtx.currShoppingCart!.map(book => book);
+    for (const book of booksInShoppingCart){
+      const deleteImgRef = ref(storage, book.bookStorageRef);
+      const selectedBookId = book.bookId;
+
+      // Delete book picture from Firebase Storage:
+      try {
+        await deleteObject(deleteImgRef);
+        await deleteDoc(doc(db, "books", selectedBookId));
+
+      } catch(error: any) {
+        oldBookCtx.showToast("Error deleting book: " + error.message);
+      }
+    };
+
+    setIsLoadingOpen(false);
+    oldBookCtx.showToast("Checkout successful!");
+    history.length > 0 ? history.goBack() : history.replace("/tabs/cart");
+  };
+
   return (
     <IonPage id="cart">
       <IonHeader>
@@ -11,15 +61,24 @@ const Checkout: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <IonLoading 
+          isOpen={isLoadingOpen}
+          spinner="crescent"
+          keyboardClose={true}
+          backdropDismiss={false}
+          duration={0}
+          showBackdrop={true}
+        />
+
         <IonList className="list-checkout">
           <IonItem>
             <IonLabel>INFORMATION</IonLabel>
           </IonItem>
 
           <IonCardHeader className="card-checkout">
-            <h4>Cantika</h4>
-            <h5>Jl. Kemayoran No. 127</h5>
-            <h6>0812-4719-1991</h6>
+            <h4>{currUserFirestore?.name}</h4>
+            <h5>{currUserFirestore?.address}</h5>
+            <h6>{currUserFirestore?.phoneNumber}</h6>
           </IonCardHeader>
 
           <IonItem>
@@ -33,36 +92,42 @@ const Checkout: React.FC = () => {
           <IonItem>
             <IonLabel>ITEMS</IonLabel>
           </IonItem>
-          <IonItem>
-            <IonCard className="card-list-item ion-padding-end">
-              <IonCardContent>
-                <IonGrid>
-                  <IonRow>
-                    <IonCol size="5">
-                      <IonImg className="image-item" src="assets/Buku7.jpg" />
-                    </IonCol>
-                    <IonCol size="6" id="items-desc">
-                      <h2>Miss Irresistible Stylist</h2>
-                      <h3>Rp 40.000</h3>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              </IonCardContent>
-            </IonCard>
-          </IonItem>
+
+          {oldBookCtx.currShoppingCart!.map((book) => (
+            <IonItem>
+              <IonCard className="card-list-item ion-padding-end">
+                <IonCardContent>
+                  <IonGrid>
+                    <IonRow>
+                      <IonCol size="5">
+                        <IonImg className="image-item" src={book.bookDownloadUrl} />
+                      </IonCol>
+                      <IonCol size="6" id="items-desc">
+                        <h2>{book.bookName}</h2>
+                        <h3>{"Rp " + Intl.NumberFormat('de-DE').format(book.bookPrice)}</h3>
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </IonCardContent>
+              </IonCard>
+            </IonItem>
+          ))}
 
           <IonItem lines="none" id="total-price">
             <IonCol>
               <IonLabel>TOTAL PRICE</IonLabel>
             </IonCol>
             <IonCol className="ion-text-end">
-              <a>Rp 47.000</a>
+              <a>{"Rp " + Intl.NumberFormat('de-DE').format(totalPrice)}</a>
             </IonCol>
           </IonItem>
 
           <IonItem lines="none">
             <IonCol className="ion-text-end">
-              <IonButton className="checkout-button ion-padding-start" href="/tabs/home">
+              <IonButton 
+                className="checkout-button ion-padding-start"
+                onClick={handleCheckout}
+              >
                 CHECKOUT
               </IonButton>
             </IonCol>

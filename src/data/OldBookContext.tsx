@@ -19,7 +19,7 @@ export interface Book {
     bookPrice: number,
     bookStorageRef: string,
     bookDownloadUrl: string,
-    bookShoppingCart: [],
+    bookShoppingCart: Array<string>,
 }
 
 export const OldBookContext = React.createContext
@@ -35,8 +35,8 @@ export const OldBookContext = React.createContext
     unregisterHomeDataListener: (() => void) | null,
     selectedBookForShoppingCart: Book | null,
     setSelectedBookForShoppingCart: (book: Book | null) => void,
-    currShoppingCart: Book[] | null,
-    setCurrShoppingCart: (shoppingCartBooks: Book[]) => void,
+    currShoppingCart: Array<Book> | null,
+    setCurrShoppingCart: (shoppingCartBooks: Array<Book>) => void,
 }>
 ({
     showToast: (message: string) => {},
@@ -61,7 +61,7 @@ const OldbookContextProvider: React.FC = props => {
     (false);
     const [isRegisteringNewUser, setIsRegisteringNewUser] = useState<boolean>(false);
     const [selectedBookForShoppingCart, setSelectedBookForShoppingCart] = useState<Book | null>(null);
-    const [currShoppingCart, setCurrShoppingCart] = useState<Array<Book> | null>(null);
+    const [currShoppingCart, setCurrShoppingCart] = useState<Array<Book>>([]);
 
     // Functions to unsubscribe / detach firestore listener:
     let unregisterSellDataListener = null;
@@ -80,7 +80,7 @@ const OldbookContextProvider: React.FC = props => {
     const authChangeListener = useCallback(() => {
         onAuthStateChanged(auth, (user) => {
             setIsOnAuthStateChangedCalled(true);
-            showToast("currUser is changed (onAuthStateChanged)!");
+            // showToast("currUser is changed (onAuthStateChanged)!");
             setCurrUser(user);
         });
     }, []);
@@ -92,13 +92,13 @@ const OldbookContextProvider: React.FC = props => {
     // Don't run getDoc() when registering new user to prevent race condition 
     // (When getDoc() runs at the same time as setDoc in register page).
     useEffect(() => {
-        showToast("currUser is changed (useEffect)!");
+        // showToast("currUser is changed (useEffect)!");
         if (currUser !== null && currUser !== undefined && isRegisteringNewUser === false 
         && (currUserFirestore === null 
             || currUserFirestore === undefined 
             || currUserFirestore!.email !== currUser!.email)
         ) {
-            showToast("Fetching user firestore data!");
+            // showToast("Fetching user firestore data!");
 
             // Get user info in Firestore:
             getDoc(doc(db, "users", currUser!.uid))
